@@ -1,13 +1,12 @@
 
 public class Posicao 
 {
-
-    int x,y;
+    private int x,y;
 
     // Getters e Setters
     public int getX() 
     {
-        return x;
+        return this.x;
     }
     public void setX(int x) 
     {
@@ -16,7 +15,7 @@ public class Posicao
 
     public int getY() 
     {
-        return y;
+        return this.y;
     }
     public void setY(int y) 
     {

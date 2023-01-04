@@ -1,22 +1,28 @@
 
 public abstract class Jogador
 {
-    Posicao p;
-    int atk, def;
+    protected Posicao pos;
+    protected int atk, def;
     
-    // Getters e Setters
-    public Posicao getP() 
-    {
-        return p;
+    //Construtores
+    public Jogador(Posicao pos,int atk, int def){
+        this.setAtk(atk);
+        this.setDef(def);
+        this.setPos(pos);
     }
-    public void setP(Posicao p) 
+    // Getters e Setters
+    public Posicao getPos() 
     {
-        this.p = p;
+        return this.pos;
+    }
+    public void setPos(Posicao pos) 
+    {
+        this.pos = pos;
     }
 
     public int getAtk() 
     {
-        return atk;
+        return this.atk;
     }
     public void setAtk(int atk) 
     {
@@ -25,7 +31,7 @@ public abstract class Jogador
 
     public int getDef() 
     {
-        return def;
+        return this.def;
     }
     public void setDef(int def) 
     {

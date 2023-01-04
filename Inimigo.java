@@ -1,12 +1,18 @@
 public class Inimigo 
 {
-    Posicao pos;
-    int atk, def;
+    private Posicao pos;
+    private int atk, def;
+
+    // Construtores
+    public Inimigo()
+    {
+
+    }
 
     // Getter e Setters
     public Posicao getPos() 
     {
-        return pos;
+        return this.pos;
     }
     public void setPos(Posicao pos) 
     {
@@ -15,7 +21,7 @@ public class Inimigo
 
     public int getAtk() 
     {
-        return atk;
+        return this.atk;
     }
     public void setAtk(int atk) 
     {
@@ -24,7 +30,7 @@ public class Inimigo
 
     public int getDef() 
     {
-        return def;
+        return this.def;
     }
     public void setDef(int def) 
     {
