@@ -1,8 +1,13 @@
 
 public abstract class Jogador
 {
+<<<<<<< HEAD
     protected Posicao pos;
     protected int atk, def;
+=======
+    Posicao pos;
+    int atk, def;
+>>>>>>> 76206f21b6764b593a854fdc4dd24ba3351cac56
     
     //Construtores
     public Jogador(Posicao pos,int atk, int def){
@@ -13,7 +18,11 @@ public abstract class Jogador
     // Getters e Setters
     public Posicao getPos() 
     {
+<<<<<<< HEAD
         return this.pos;
+=======
+        return pos;
+>>>>>>> 76206f21b6764b593a854fdc4dd24ba3351cac56
     }
     public void setPos(Posicao pos) 
     {
@@ -44,5 +53,5 @@ public abstract class Jogador
     public void movimentar(){}
 
     public void procurar(){}
-
+    
 }
