@@ -1,17 +1,17 @@
 
 public abstract class Jogador
 {
-    Posicao p;
+    Posicao pos;
     int atk, def;
     
     // Getters e Setters
-    public Posicao getP() 
+    public Posicao getPos() 
     {
-        return p;
+        return pos;
     }
-    public void setP(Posicao p) 
+    public void setPos(Posicao pos) 
     {
-        this.p = p;
+        this.pos = pos;
     }
 
     public int getAtk() 
@@ -38,5 +38,5 @@ public abstract class Jogador
     public void movimentar(){}
 
     public void procurar(){}
-
+    
 }
