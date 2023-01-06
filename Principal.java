@@ -3,7 +3,6 @@ public abstract class Principal
     static void criarTabuleiro(Setor[][] tabuleiro, int tam)
     {
         int i, j;
-        
         i = 1;
         //Setores normais rosas
         while(i <= tam-2)
@@ -11,7 +10,13 @@ public abstract class Principal
             j = 1;
             while(j <= tam-2)
             {
-                tabuleiro[i][j] = new SetorNormal(); 
+                tabuleiro[i][j] = new SetorNormal();
+                Porta p = new Porta(); // aqui são criadas portas nulas(todos atributos falsos)
+                
+                // p.setAcima(random(2)); random(2) = 0 ou 1 (false or true) 
+                // p.setAbaixo(aleatorio);
+                // p.setEsquerda(aleatorio);
+                // p.setDireita(aleatorio);
             }    
         }
 
@@ -27,6 +32,9 @@ public abstract class Principal
         {
             tabuleiro[i][0] = new SetorOculto();    
             tabuleiro[i][4] = new SetorOculto();
+            
+            // Quando estiver na coluna 0, tranca-se a porta da esquerda & quando estiver na coluna 4, tranca-se a porta da direita;
+        
         }
         //Fim setores ocultos
 
@@ -36,11 +44,13 @@ public abstract class Principal
         {
             tabuleiro[0][j] = new SetorOculto();    
             tabuleiro[4][j] = new SetorOculto();
+
+            // Quando estiver na linha 0, tranca-se a porta acima & quando estiver na linha, tranca-se a porta abaixo;
         }
         //Fim setores privados
-
-        
     }
+
+
 
     public void menuMovimentar()
     {

@@ -1,5 +1,5 @@
 
-public abstract class Porta 
+public class Porta 
 {
     private boolean acima;
     private boolean esquerda;

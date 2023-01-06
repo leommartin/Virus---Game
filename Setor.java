@@ -1,4 +1,4 @@
-public class Setor
+public abstract class Setor
 {
     protected Porta porta;
     protected boolean existeInimigo;
@@ -11,7 +11,7 @@ public class Setor
 
     public void setPorta(Porta porta)
     {
-        this.porta=porta;
+        this.porta = porta;
     }
 
     public boolean existeInimigo()
@@ -21,7 +21,7 @@ public class Setor
 
     public void setExisteInimigo(boolean existeInimigo)
     {
-        this.existeInimigo=existeInimigo;
+        this.existeInimigo = existeInimigo;
     }
 
     public boolean isVisitado()
@@ -31,6 +31,6 @@ public class Setor
 
     public void setVisitado(boolean visitado)
     {
-        this.visitado=visitado;
+        this.visitado = visitado;
     }
 }
