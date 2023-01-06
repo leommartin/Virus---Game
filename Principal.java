@@ -13,7 +13,8 @@ public abstract class Principal
                 tabuleiro[i][j] = new SetorNormal();
                 Porta p = new Porta(); // aqui são criadas portas nulas(todos atributos falsos)
                 
-                // p.setAcima(random(2)); random(2) = 0 ou 1 (false or true) 
+                // To do: VER DOCUMENTAÇÃO DE RANDOM()
+                // p.setAcima(aleatorio); 
                 // p.setAbaixo(aleatorio);
                 // p.setEsquerda(aleatorio);
                 // p.setDireita(aleatorio);
