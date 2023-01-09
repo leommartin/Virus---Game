@@ -101,7 +101,7 @@ public abstract class Principal
         }
         //Fim setores ocultos
 
-        
+
         Porta p5 = new Porta(true, true, false, true);
         Porta p6 = new Porta(true, true, true, false);
 
