@@ -2,9 +2,19 @@
 public class Porta 
 {
     private boolean acima;
-    private boolean esquerda;
     private boolean abaixo;
+    private boolean esquerda;
     private boolean direita;
+
+    public Porta(){}
+
+    public Porta(boolean acima, boolean abaixo, boolean esquerda, boolean direita)
+    {
+        setAcima(acima);
+        setAbaixo(abaixo);
+        setEsquerda(esquerda);
+        setDireita(direita);
+    }
 
     //Getters e Setters
     public boolean isAcima()
