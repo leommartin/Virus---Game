@@ -10,10 +10,10 @@ public class Porta
 
     public Porta(boolean acima, boolean abaixo, boolean esquerda, boolean direita)
     {
-        setAcima(acima);
-        setAbaixo(abaixo);
-        setEsquerda(esquerda);
-        setDireita(direita);
+        this.setAcima(acima);
+        this.setAbaixo(abaixo);
+        this.setEsquerda(esquerda);
+        this.setDireita(direita);
     }
 
     //Getters e Setters
