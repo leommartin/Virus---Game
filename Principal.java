@@ -4,6 +4,8 @@ public abstract class Principal
 {
     public static final int NUM_COL = 5;
     public static final int NUM_LIN = 5;
+    public static final int POS_CENTRAL_X = 2;
+    public static final int POS_CENTRAL_Y = 2;
     
     static void criarPortas(Setor[][] tabuleiro)
     {
@@ -176,11 +178,18 @@ public abstract class Principal
                 }
 
                 tabuleiro[i][j].setPorta(p);
+                tabuleiro[i][j].setExisteInimigo(false);
+                tabuleiro[i][j].setVisitado(false);
             }
         }
+
+        //Setor principal
+        Porta portaCentral= new Porta(true,true,true,true);
+        tabuleiro[POS_CENTRAL_X][POS_CENTRAL_Y].setPorta(portaCentral);
+        tabuleiro[POS_CENTRAL_X][POS_CENTRAL_Y].setVisitado(true);
     }
 
-    static void criarTabuleiro(Setor[][] tabuleiro, int tam)
+    static void criarTabuleiro(Setor[][] tabuleiro)
     {
         int i, j;
     
@@ -224,14 +233,19 @@ public abstract class Principal
     // Fim do instanciamento de setores
     
     }
-
-
-    public void menuMovimentar()
+    
+    static void menuMovimentar(Jogador p)
     {
         // Definir como vai ser escrito o cabeçalho
-        System.out.println("Para onde deseja movimentar PLAYER 1 (P1)?");
-        System.out.println("Para onde deseja movimentar PLAYER 2 (P2)?");
-
+        if(p instanceof JogadorSimples)
+        {
+            System.out.println("Para onde deseja movimentar PLAYER 1 (P1)?");
+        }
+        else
+        {
+            System.out.println("Para onde deseja movimentar PLAYER 2 (P2)?");
+        }
+         
         System.out.println("U - Up");
         System.out.println("D - Down");
         System.out.println("L - Left");
@@ -251,25 +265,26 @@ public abstract class Principal
     
     public static void main(String[] args) 
     {
-        int tam=5;
+        int tam = 5;
         Setor[][] tabuleiro = new Setor[tam][tam];
-        criarTabuleiro(tabuleiro,tam);
+        criarTabuleiro(tabuleiro);
+        criarPortas(tabuleiro);
+
+        Jogador p1,p2;
         
         Posicao posP1 = new Posicao();
         Posicao posP2 = new Posicao();
-
-        posP1.setX(3);
-        posP1.setY(3);
-        JogadorSimples p1 = new JogadorSimples(posP1, 0, 0);
-
-        posP2.setX(3);
-        posP2.setY(3);
-        JogadorSuporte p2 = new JogadorSuporte(posP2, 0, 0);
-
         
+        posP1.setX(POS_CENTRAL_X);
+        posP1.setY(POS_CENTRAL_Y);
+        p1 = new JogadorSimples(posP1, 2, 6);
 
+        posP2.setX(POS_CENTRAL_X);
+        posP2.setY(POS_CENTRAL_Y);
+        p2 = new JogadorSuporte(posP2, 1, 7);
 
-        
-        
+        menuMovimentar(p1);
+        menuMovimentar(p2);
+
     }
 }
