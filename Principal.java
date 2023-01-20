@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public abstract class Principal
 {
@@ -236,7 +237,9 @@ public abstract class Principal
     
     static void menuMovimentar(Jogador p)
     {
-        // Definir como vai ser escrito o cabeçalho
+        char move;
+        Scanner input = new Scanner(System.in);
+
         if(p instanceof JogadorSimples)
         {
             System.out.println("Para onde deseja movimentar PLAYER 1 (P1)?");
@@ -250,6 +253,40 @@ public abstract class Principal
         System.out.println("D - Down");
         System.out.println("L - Left");
         System.out.println("R - Right");
+        
+        //verificar se existe inimigo, se nao trocar a posicao do jogador na matriz
+        move = input.next().charAt(0);
+        
+        switch (move) 
+        {
+            case 'u':
+            
+                p.movimentar(p, move);
+                break;
+                
+            case 'd':
+                
+                p.movimentar(p, move);
+                //System.out.println("Apertou D");
+                break;
+
+            case 'l':
+                
+                p.movimentar(p, move);
+                //System.out.println("Apertou L");
+                break;
+
+            case 'r':
+                
+                p.movimentar(p, move);
+                //System.out.println("Apertou R");
+                break;
+            
+            default:
+                System.out.println("Tecla inválida.");
+                break;
+        }
+
     }
 
     public void menuAtacar()
@@ -283,8 +320,54 @@ public abstract class Principal
         posP2.setY(POS_CENTRAL_Y);
         p2 = new JogadorSuporte(posP2, 1, 7);
 
-        menuMovimentar(p1);
-        menuMovimentar(p2);
+        //laco principal
 
+        Scanner input = new Scanner(System.in);
+        Posicao posix = p1.getPos();
+        int z;
+
+        do
+        {
+            System.out.print("Num: ");
+            z = input.nextInt(); 
+
+            Posicao pos = p1.getPos();
+
+            System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
+
+            menuMovimentar(p1);
+            
+            System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
+
+            //Posicao pos2 = p1.getPos();
+
+            //System.out.println("Y: "+ pos2.getY() + " X: " + pos2.getX());
+
+            //menuMovimentar(p1);
+            
+            // System.out.println("Y: "+ pos2.getY() + " X: " + pos2.getX());
+
+            //input.nextLine();
+            
+            //Posicao pos2 = p2.getPos();
+            //System.out.println("Y: "+ pos2.getY() + " X: " + pos2.getX());
+            //menuMovimentar(p2);
+            //System.out.println("Y: "+ pos2.getY() + " X: " + pos2.getX());
+            
+            
+            // gerarInimigo(p1);
+            // escolheAcao(p1);
+            // inimigoAtacar(p1);
+            
+            // menuMovimentar(p2);
+            // gerarInimigo(p2);
+            // escolheAcao(p2);
+            // inimigoAtacar(p2);
+        //}
+        }while(z != 0);
+
+        input.close();
+        // // while((naoEncontraFonte(p1,p2,fonte)) && (turno <= 25) && (jogadoresVivos(p1,p2)))
+        
     }
 }
