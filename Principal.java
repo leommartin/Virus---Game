@@ -235,7 +235,7 @@ public abstract class Principal
     
     }
     
-    static void menuMovimentar(Jogador p)
+    static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
         char move;
         Scanner input = new Scanner(System.in);
@@ -260,26 +260,26 @@ public abstract class Principal
         switch (move) 
         {
             case 'u':
-            
-                p.movimentar(p, move);
+                if(!p.movimentar(p, move,tabuleiro));
+                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
                 
             case 'd':
                 
-                p.movimentar(p, move);
-                //System.out.println("Apertou D");
+                if(!p.movimentar(p, move,tabuleiro));
+                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
 
             case 'l':
                 
-                p.movimentar(p, move);
-                //System.out.println("Apertou L");
+                if(!p.movimentar(p, move,tabuleiro));
+                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
 
             case 'r':
                 
-                p.movimentar(p, move);
-                //System.out.println("Apertou R");
+                if(!p.movimentar(p, move,tabuleiro));
+                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
             
             default:
@@ -335,7 +335,7 @@ public abstract class Principal
 
             System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
 
-            menuMovimentar(p1);
+            menuMovimentar(p1,tabuleiro);
             
             System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
 
