@@ -57,25 +57,26 @@ public abstract class Jogador
         // m[y][x] ; para alterar m[l][c], altere l
         if (!tabuleiro[linha][coluna].existeInimigo())
         {
-            if(direcao=='u')
-            {
-                    if(porta.isAcima())
-                        pos.setY(linha - 1);
+            if(direcao == 'u')
+            {     
+                if(porta.isAcima())
+                    pos.setY(linha - 1);
             }
-            else if(direcao=='d')
+            else if(direcao == 'd')
             {
-                    if(porta.isAbaixo());
-                        pos.setY(linha + 1);
+                if(porta.isAbaixo());
+                    pos.setY(linha + 1);
             }
-            else if(direcao=='l')
+            else if(direcao == 'l')
             {
-                    if(porta.isEsquerda())
-                        pos.setX(coluna - 1);
+                if(porta.isEsquerda())
+                    pos.setX(coluna - 1);
             }
             else
             {
-                    if(porta.isDireita())
-                        pos.setX(coluna + 1);
+                if(porta.isDireita())
+                    pos.setX(coluna + 1);
+           
             }
             return true;
         }

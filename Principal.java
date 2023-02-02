@@ -27,7 +27,8 @@ public abstract class Principal
 
                 for(int indice = 0; indice < 4; indice++)
                 {
-                    numAleatorio[indice] = random.nextInt(2);  
+                    // numAleatorio[indice] = random.nextInt(2);
+                    numAleatorio[indice] = 1;  
                 }
                 
                 // Primeira linha
@@ -234,6 +235,32 @@ public abstract class Principal
     // Fim do instanciamento de setores
     
     }
+    static void gerarPosicaoInfeccao(Posicao posInfeccao)
+    {
+        Random random = new Random(); 
+
+        posInfeccao.setX(random.nextInt(5));
+        posInfeccao.setY(random.nextInt(5));
+        while(posInfeccao.getX() == 2 && posInfeccao.getX() == 2)
+        {
+            posInfeccao.setX(random.nextInt(5));
+            posInfeccao.setY(random.nextInt(5));
+        }
+    }
+
+    static boolean achouFonte(Jogador p, Posicao posInfeccao)
+    {
+        Posicao posPlayer;
+
+        posPlayer = p.getPos();
+    
+        if( posPlayer.getX() == posInfeccao.getX() && posPlayer.getY() == posInfeccao.getY())
+        {
+            return true;
+        }
+
+        return false;
+    }
     
     static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
@@ -260,26 +287,26 @@ public abstract class Principal
         switch (move) 
         {
             case 'u':
-                if(!p.movimentar(p, move,tabuleiro));
-                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
+                p.movimentar(p, move,tabuleiro);
+                    // System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
                 
             case 'd':
                 
-                if(!p.movimentar(p, move,tabuleiro));
-                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
+                p.movimentar(p, move,tabuleiro);
+                    //System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
 
             case 'l':
                 
-                if(!p.movimentar(p, move,tabuleiro));
-                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
+                p.movimentar(p, move,tabuleiro);
+                    // System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
 
             case 'r':
                 
-                if(!p.movimentar(p, move,tabuleiro));
-                    System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
+                p.movimentar(p, move,tabuleiro);
+                    // System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
                 break;
             
             default:
@@ -303,7 +330,9 @@ public abstract class Principal
     public static void main(String[] args) 
     {
         int tam = 5;
-        Setor[][] tabuleiro = new Setor[tam][tam];
+        Posicao posInfeccao = new Posicao();
+        Setor[][] tabuleiro = new Setor[tam][tam];              
+
         criarTabuleiro(tabuleiro);
         criarPortas(tabuleiro);
 
@@ -320,16 +349,20 @@ public abstract class Principal
         posP2.setY(POS_CENTRAL_Y);
         p2 = new JogadorSuporte(posP2, 1, 7);
 
+        gerarPosicaoInfeccao(posInfeccao);
+
         //laco principal
 
         Scanner input = new Scanner(System.in);
         Posicao posix = p1.getPos();
-        int z;
+        // int z;
+
+        System.out.printf("InfY: %d , InfX: %d\n", posInfeccao.getY(), posInfeccao.getX());
 
         do
         {
-            System.out.print("Num: ");
-            z = input.nextInt(); 
+            // System.out.print("Num: ");
+            // z = input.nextInt(); 
 
             Posicao pos = p1.getPos();
 
@@ -355,7 +388,7 @@ public abstract class Principal
             //System.out.println("Y: "+ pos2.getY() + " X: " + pos2.getX());
             
             
-            // gerarInimigo(p1);
+            // // gerarInimigo(p1)
             // escolheAcao(p1);
             // inimigoAtacar(p1);
             
@@ -364,7 +397,7 @@ public abstract class Principal
             // escolheAcao(p2);
             // inimigoAtacar(p2);
         //}
-        }while(z != 0);
+        } while(!achouFonte(p1,posInfeccao));
 
         input.close();
         // // while((naoEncontraFonte(p1,p2,fonte)) && (turno <= 25) && (jogadoresVivos(p1,p2)))

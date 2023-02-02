@@ -8,18 +8,26 @@ public class Posicao
     {
         return this.x;
     }
+    
     public void setX(int x) 
     {
-        this.x = x;
+        if(x >= 0 && x <= 4)
+        {
+            this.x = x;
+        }
     }
 
     public int getY() 
     {
         return this.y;
     }
+
     public void setY(int y) 
     {
-        this.y = y;
+        if(y >= 0 && y <= 4)
+        {
+            this.y = y;
+        }
     }
 
 }
