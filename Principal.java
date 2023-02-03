@@ -254,7 +254,17 @@ public abstract class Principal
 
         posPlayer = p.getPos();
     
-        if( posPlayer.getX() == posInfeccao.getX() && posPlayer.getY() == posInfeccao.getY())
+        if( (posPlayer.getX() == posInfeccao.getX()) && (posPlayer.getY() == posInfeccao.getY()))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    static boolean p1EstaVivo(Jogador p)
+    {
+        if(p.getDef() > 0)
         {
             return true;
         }
@@ -329,9 +339,10 @@ public abstract class Principal
     
     public static void main(String[] args) 
     {
-        int tam = 5;
+        int tam = 5, turno = 0;
         Posicao posInfeccao = new Posicao();
-        Setor[][] tabuleiro = new Setor[tam][tam];              
+        Setor[][] tabuleiro = new Setor[tam][tam];
+
 
         criarTabuleiro(tabuleiro);
         criarPortas(tabuleiro);
@@ -363,7 +374,7 @@ public abstract class Principal
         {
             // System.out.print("Num: ");
             // z = input.nextInt(); 
-
+ 
             Posicao pos = p1.getPos();
 
             System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
@@ -371,6 +382,8 @@ public abstract class Principal
             menuMovimentar(p1,tabuleiro);
             
             System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
+
+            turno++; // verificar se o movimento é valido para contar um turno
 
             //Posicao pos2 = p1.getPos();
 
@@ -397,7 +410,7 @@ public abstract class Principal
             // escolheAcao(p2);
             // inimigoAtacar(p2);
         //}
-        } while(!achouFonte(p1,posInfeccao));
+        } while( (!achouFonte(p1,posInfeccao)) && (turno <= 25) && (p1EstaVivo(p1)) );
 
         input.close();
         // // while((naoEncontraFonte(p1,p2,fonte)) && (turno <= 25) && (jogadoresVivos(p1,p2)))
