@@ -60,7 +60,9 @@ public abstract class Jogador
             if(direcao == 'u')
             {     
                 if(porta.isAcima())
+                {
                     pos.setY(linha - 1);
+                }
             }
             else if(direcao == 'd')
             {

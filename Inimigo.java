@@ -4,9 +4,11 @@ public class Inimigo
     private int atk, def;
 
     // Construtores
-    public Inimigo()
+    public Inimigo(int atk, int def, Posicao pos)
     {
-
+        this.setAtk(atk);
+        this.setDef(def);
+        this.setPos(pos);
     }
 
     // Getter e Setters

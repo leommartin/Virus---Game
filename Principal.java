@@ -1,5 +1,7 @@
-import java.util.Random;
-import java.util.Scanner;
+
+import java.util.*;
+// import java.util.Random;
+// import java.util.Scanner;
 
 public abstract class Principal
 {
@@ -7,6 +9,7 @@ public abstract class Principal
     public static final int NUM_LIN = 5;
     public static final int POS_CENTRAL_X = 2;
     public static final int POS_CENTRAL_Y = 2;
+
     
     static void criarPortas(Setor[][] tabuleiro)
     {
@@ -268,13 +271,15 @@ public abstract class Principal
         {
             return true;
         }
-
         return false;
     }
     
-    static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
+    static boolean menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
         char move;
+        Posicao pos;
+        int linha, coluna;
+        boolean existeMovimentacao = false;
         Scanner input = new Scanner(System.in);
 
         if(p instanceof JogadorSimples)
@@ -291,39 +296,126 @@ public abstract class Principal
         System.out.println("L - Left");
         System.out.println("R - Right");
         
-        //verificar se existe inimigo, se nao trocar a posicao do jogador na matriz
         move = input.next().charAt(0);
         
-        switch (move) 
+        if(move == 'u' || move == 'd' || move == 'l' || move == 'r')
         {
-            case 'u':
-                p.movimentar(p, move,tabuleiro);
-                    // System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
-                break;
-                
-            case 'd':
-                
-                p.movimentar(p, move,tabuleiro);
-                    //System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
-                break;
-
-            case 'l':
-                
-                p.movimentar(p, move,tabuleiro);
-                    // System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
-                break;
-
-            case 'r':
-                
-                p.movimentar(p, move,tabuleiro);
-                    // System.out.println("Precisar matar todos os inimigos para se movimentar em outro setor");
-                break;
-            
-            default:
-                System.out.println("Tecla inválida.");
-                break;
+            if(p.movimentar(p, move,tabuleiro))
+            {   
+                existeMovimentacao = true;
+            }
+        }
+        else
+        {
+            System.out.println("Tecla inválida.");
         }
 
+        if (existeMovimentacao)
+        {
+            pos = p.getPos();
+            linha = pos.getY();
+            coluna = pos.getX();
+            tabuleiro[linha][coluna].setVisitado(true);
+        }
+        else
+        {
+            System.out.println("È necessário eliminar todos os inimigos para se movimentar.");
+        }
+
+        return existeMovimentacao;
+    }
+
+    static void gerarInimigo(Jogador p, Setor[][] tabuleiro)
+    {
+        Posicao pos;
+        int linha, coluna;
+        
+        pos = p.getPos();
+        // Verificar se é necessário o atributo posição em inimigo.
+        linha = pos.getX();
+        coluna = pos.getY();
+        
+        if( !tabuleiro[linha][coluna].visitado )
+        {
+            // Gerar os inimigos
+            int atk, def, numInimigos;
+            Random random = new Random(); 
+            numInimigos = random.nextInt(3) + 1;
+
+            ArrayList<Inimigo> listaDeInimigos = new ArrayList<Inimigo>(numInimigos);
+
+            for(int i = 0; i < listaDeInimigos.size(); i++)
+            {
+                // Gerar o ataque e defesa dos inimigos
+                atk = random.nextInt(3)+1;
+                def = atk;
+
+                Inimigo inimigo = new Inimigo(atk,def,pos);
+
+                listaDeInimigos.add(i, inimigo);
+            }
+        }
+
+    }
+
+    static void escolheAcao(Jogador p, Setor[][] tabuleiro)
+    {
+        char acao;
+        Posicao pos;
+        int linha, coluna;
+
+        pos = p.getPos();
+        linha = pos.getY();
+        coluna = pos.getX();
+        
+        // Scanner input = new Scanner(System.in);
+
+        if(p instanceof JogadorSimples)
+        {
+            System.out.println("Qual ação PLAYER 1 (P1) deseja realizar?");
+
+            System.out.println("A - Attack");
+        
+            if(tabuleiro[linha][coluna] instanceof SetorNormal || tabuleiro[linha][coluna] instanceof SetorOculto )
+            {
+                System.out.println("S - Search");
+            }
+        }
+        else
+        {
+            System.out.println("Qual ação PLAYER 2 (P2) deseja realizar?");
+
+            System.out.println("A - Attack");
+        
+            if(tabuleiro[linha][coluna] instanceof SetorNormal || tabuleiro[linha][coluna] instanceof SetorOculto )
+            {
+                System.out.println("S - Search");
+            }
+            
+            System.out.println("R - Recover");
+        }
+        
+        // acao = input.next().charAt(0);
+        
+        // switch (acao) {
+        //     case 'a':
+        //         atacar();
+        //         break;
+        //     case 's':
+        //         procurar();
+        //         break;
+        //     case 'r':
+        //         recuperar();
+        //         break;
+        //     case 'm':
+        //         menuMovimentar(p, tabuleiro);
+        //         break;
+            
+        //     default:
+        //         System.out.println("Tecla inválida.");
+        //         break;
+        // }
+        
     }
 
     public void menuAtacar()
@@ -365,21 +457,21 @@ public abstract class Principal
         //laco principal
 
         Scanner input = new Scanner(System.in);
-        Posicao posix = p1.getPos();
-        // int z;
 
         System.out.printf("InfY: %d , InfX: %d\n", posInfeccao.getY(), posInfeccao.getX());
 
         do
         {
-            // System.out.print("Num: ");
-            // z = input.nextInt(); 
- 
             Posicao pos = p1.getPos();
 
             System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
 
-            menuMovimentar(p1,tabuleiro);
+            if(menuMovimentar(p1,tabuleiro))
+            {
+                gerarInimigo(p1,tabuleiro);
+                escolheAcao(p1,tabuleiro);
+                
+            }
             
             System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
 
@@ -410,7 +502,7 @@ public abstract class Principal
             // escolheAcao(p2);
             // inimigoAtacar(p2);
         //}
-        } while( (!achouFonte(p1,posInfeccao)) && (turno <= 25) && (p1EstaVivo(p1)) );
+        } while( (!achouFonte(p1,posInfeccao)) && (turno <= 25) && (p1EstaVivo(p1)) ); // nao esqueca de colocar p2 no achouFonte
 
         input.close();
         // // while((naoEncontraFonte(p1,p2,fonte)) && (turno <= 25) && (jogadoresVivos(p1,p2)))
