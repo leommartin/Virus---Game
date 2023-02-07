@@ -36,7 +36,14 @@ public abstract class Jogador
     }
     public void setDef(int def) 
     {
-        this.def = def;
+        if(def > 7)
+        {
+            this.def = 7;
+        }
+        else
+        {
+            this.def = def;
+        }
     }
 
     // Outro métodos
