@@ -3,6 +3,9 @@ import java.util.*;
 // import java.util.Random;
 // import java.util.Scanner;
 
+// To do: Ataque do inimigo
+// To do: Escrever a matriz
+
 public abstract class Principal
 {
     public static final int NUM_COL = 5;
@@ -251,17 +254,28 @@ public abstract class Principal
         }
     }
 
-    static boolean achouFonte(Jogador p, Posicao posInfeccao)
+    static boolean existeColisao(Posicao pos, Posicao posInfeccao)
     {
-        Posicao posPlayer;
-
-        posPlayer = p.getPos();
-    
-        if( (posPlayer.getX() == posInfeccao.getX()) && (posPlayer.getY() == posInfeccao.getY()))
+        if( (pos.getX() == posInfeccao.getX()) && (pos.getY() == posInfeccao.getY()) )
         {
             return true;
         }
+        return false;
+    }
 
+    static boolean achouFonte(Jogador p1, Jogador p2, Posicao posInfeccao)
+    {
+        Posicao posPlayer1;
+        Posicao posPlayer2;
+
+        posPlayer1 = p1.getPos();
+        posPlayer2 = p2.getPos();
+    
+        if (existeColisao(posPlayer1,posInfeccao) || existeColisao(posPlayer2,posInfeccao) )
+        {
+            return true;
+        }
+        
         return false;
     }
 
@@ -275,54 +289,45 @@ public abstract class Principal
     }
     
     // To do: Desmembrar menuMovimentar em 2 métodos, menuMovimentar() e movimentar();
-    static boolean menuMovimentar(Jogador p,Setor[][] tabuleiro)
+    static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
         char move;
-        Posicao pos;
-        int linha, coluna;
         boolean existeMovimentacao = false;
         Scanner input = new Scanner(System.in);
 
-        if(p instanceof JogadorSimples)
+        while (!existeMovimentacao)
         {
-            System.out.println("Para onde deseja movimentar PLAYER 1 (P1)?");
+            if(p instanceof JogadorSimples)
+            {
+                System.out.println("Para onde deseja movimentar PLAYER 1 (P1)?");
+            }
+            else
+            {
+                System.out.println("Para onde deseja movimentar PLAYER 2 (P2)?");
+            }
+            
+            System.out.println("U - Up");
+            System.out.println("D - Down");
+            System.out.println("L - Left");
+            System.out.println("R - Right");
+            
+            move = input.next().charAt(0);
+
+            existeMovimentacao = movimentar(move, p, tabuleiro);
         }
-        else
-        {
-            System.out.println("Para onde deseja movimentar PLAYER 2 (P2)?");
-        }
-         
-        System.out.println("U - Up");
-        System.out.println("D - Down");
-        System.out.println("L - Left");
-        System.out.println("R - Right");
-        
-        move = input.next().charAt(0);
-        
+    }
+
+    static boolean movimentar(char move, Jogador p, Setor[][] tabuleiro)
+    {
         if(move == 'u' || move == 'd' || move == 'l' || move == 'r')
         {
             if(p.movimentar(p, move,tabuleiro))
             {   
-                existeMovimentacao = true;
+                return true;
             }
         }
-        else
-        {
-            System.out.println("Tecla inválida.");
-        }
-
-        if (existeMovimentacao)
-        {
-            pos = p.getPos();
-            linha = pos.getY();
-            coluna = pos.getX();
-        }
-        else
-        {
-            System.out.println("È necessário eliminar todos os inimigos para se movimentar.");
-        }
-
-        return existeMovimentacao;
+        System.out.println("Tecla inválida.");
+        return false;
     }
 
     static void gerarInimigo(Jogador p, Setor[][] tabuleiro)
@@ -568,6 +573,11 @@ public abstract class Principal
 
         int qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
 
+        if(qtdInimigos < 1)
+        {
+            tabuleiro[linha][coluna].existeInimigo = false;
+        }
+
         for(int i = 0; i < qtdInimigos; i++)
         {
             int atk = tabuleiro[linha][coluna].getInimigo(i).getAtk();
@@ -575,7 +585,6 @@ public abstract class Principal
 
             System.out.printf("%d - %d/%d\n", i+1, atk, def);
         }
-
     }
 
     static void recuperarJogador(Jogador p1, Jogador p2, Setor[][] tabuleiro)
@@ -623,10 +632,11 @@ public abstract class Principal
 
     public static void main(String[] args) 
     {
-        int tam = 5, turno = 0;
+        int linha, coluna, turno;
         Posicao posInfeccao = new Posicao();
-        Setor[][] tabuleiro = new Setor[tam][tam];
+        Setor[][] tabuleiro = new Setor[NUM_LIN][NUM_COL];
         
+        turno=0;
         criarTabuleiro(tabuleiro);
         criarPortas(tabuleiro);
 
@@ -653,25 +663,55 @@ public abstract class Principal
 
         do
         {
-            Posicao pos = p1.getPos();
+            posP1 = p1.getPos();
+            linha = posP1.getY();
+            coluna = posP1.getX();
 
-            System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
+            System.out.println("P1: " + "Y: "+ linha + " X: " + coluna);
 
-            if(menuMovimentar(p1,tabuleiro))
+            if(tabuleiro[linha][coluna].existeInimigo)
             {
+                escolheAcao(p1, tabuleiro);
+            }
+            else
+            {
+                menuMovimentar(p1,tabuleiro);
                 gerarInimigo(p1,tabuleiro);
-                if(escolheAcao(p1,tabuleiro) == 'r')
+                
+                if(escolheAcao(p1,tabuleiro) == 'r') // errado
                 {
                     recuperarJogador(p1,p2,tabuleiro);
                 }
-                
+                turno++;
             }
+
+            posP2 = p2.getPos();
+            linha = posP2.getY();
+            coluna = posP2.getX(); 
             
-            System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
+            System.out.println("P2: " + "Y: "+ linha + " X: " + coluna);
 
-            turno++; // verificar se o movimento é valido para contar um turno
+            if(tabuleiro[linha][coluna].existeInimigo)
+            {
+                escolheAcao(p2, tabuleiro);
+            }
+            else
+            {
+                menuMovimentar(p2,tabuleiro);
+                gerarInimigo(p2,tabuleiro);
 
-        } while( (!achouFonte(p1,posInfeccao)) && (turno <= 25) && (p1EstaVivo(p1)) ); // nao esqueca de colocar p2 no achouFonte
+                if(escolheAcao(p2,tabuleiro) == 'r')
+                {
+                    recuperarJogador(p1,p2,tabuleiro);
+                }
+                turno++;
+            }
+
+            //System.out.println("Y: "+ pos.getY() + " X: " + pos.getX());
+
+            //turno++; // verificar se o movimento é valido para contar um turno
+
+        } while( (!achouFonte(p1,p2,posInfeccao)) && (turno <= 25) && (p1EstaVivo(p1)) ); // nao esqueca de colocar p2 no achouFonte
 
         input.close();
     }

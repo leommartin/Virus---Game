@@ -8,7 +8,7 @@ public abstract class Setor
     protected ArrayList<Inimigo> listaDeInimigos = new ArrayList<Inimigo>(3);
 
     public Setor(){}
-
+    
     public Porta getPorta()
     {
         return this.porta;
