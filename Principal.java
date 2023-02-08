@@ -587,6 +587,51 @@ public abstract class Principal
         }
     }
 
+    static void ataqueInimigo(Jogador p1, Jogador p2, Setor[][] tabuleiro)
+    {
+        Posicao pos;
+        int linhaP1, linhaP2, colunaP1, colunaP2, qtdInimigos;
+
+        Random random = new Random(); 
+        int numAleatorio, numJogador, def;
+
+        posP1 = p1.getPos();
+        posP2 = p2.getPos();
+
+        linhap1 = posP1.getY();
+        linhaP2 = posP2.getY();
+
+        colunaP1 = posP1.getX();
+        colunaP2 = posP2.getY();
+
+        qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+
+        // Caso os dois jogadores estejam no mesmo setor
+        if(linhaP1 == linhaP2 && colunaP1 == colunaP2)
+        {
+            for(int i = 0; i < qtdInimigos; i++)
+            {
+                numAleatorio = random.nextInt(6)+1;
+                numJogador = random.nextInt(2)+1;
+                
+                atkInimigo = tabuleiro[linha][coluna].getInimigo(i).getAtk();
+
+                if(numJogador == 1 && numAleatorio % 2 == 0)
+                {
+                    def = p1.getDef();
+                    p1.setDef(def - atkInimigo)
+                }
+                else if(numJogador == 2 && numAleatorio % 2 == 0)
+                {
+                    def = p2.getDef();
+                    p2.setDef(def - atkInimigo);
+                }
+            }
+        }
+        else
+        // Definir ataque dos inimigos quando só houver 1 player no setor
+    }
+
     static void recuperarJogador(Jogador p1, Jogador p2, Setor[][] tabuleiro)
     {
         Posicao posP1, posP2;
@@ -684,6 +729,8 @@ public abstract class Principal
                 }
                 turno++;
             }
+
+            ataqueInimigo(p1,p2,tabuleiro);
 
             posP2 = p2.getPos();
             linha = posP2.getY();
