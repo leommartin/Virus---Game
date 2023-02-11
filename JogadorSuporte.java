@@ -20,29 +20,35 @@ public class JogadorSuporte extends Jogador
 
         if(posP1.getX() == posP2.getX() && posP1.getY() == posP2.getY())
         {
+            Boolean acaoValida = false;
             Scanner input = new Scanner(System.in);
 
-            System.out.println("Qual Jogador deseja recuperar?");
-            System.out.println("1 - P1");
-            System.out.println("2 - P2");
+            while (!acaoValida)
+            {
+                System.out.println("Qual Jogador deseja recuperar?");
+                System.out.println("1 - P1");
+                System.out.println("2 - P2");
 
-            player = input.nextInt();
+                player = input.nextInt();
 
-            switch (player) 
-            {    
-                case 1:
-                    def = p1.getDef();
-                    p1.setDef(def+2);
-                    break;
-                
-                case 2:
-                    def = p2.getDef();
-                    p2.setDef(def+2);
-                    break;
-                
-                default:
-                    System.out.println("Tecla inválida.");
-                    break;
+                switch (player) 
+                {    
+                    case 1:
+                        acaoValida = true;
+                        def = p1.getDef();
+                        p1.setDef(def+2);
+                        break;
+                    
+                    case 2:
+                        acaoValida = true;
+                        def = p2.getDef();
+                        p2.setDef(def+2);
+                        break;
+                    
+                    default:
+                        System.out.println("Tecla inválida.");
+                        break;
+                }
             }
         }
         else

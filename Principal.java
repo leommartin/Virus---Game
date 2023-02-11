@@ -291,32 +291,41 @@ public abstract class Principal
         return false;
     }
     
-    // To do: Desmembrar menuMovimentar em 2 métodos, menuMovimentar() e movimentar();
     static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
-        char move;
-        boolean existeMovimentacao = false;
-        // Scanner input = new Scanner(System.in);
+        Posicao pos;
+        int linha, coluna;
 
-        while (!existeMovimentacao)
+        pos = p.getPos();
+        linha = pos.getY();
+        coluna = pos.getX();
+        
+        if (!tabuleiro[linha][coluna].existeInimigo)
         {
-            if(p instanceof JogadorSimples)
-            {
-                System.out.printf("\n\nPara onde deseja movimentar PLAYER 1 (P1)?\n");
-            }
-            else
-            {
-                System.out.printf("\n\nPara onde deseja movimentar PLAYER 2 (P2)?\n");
-            }
-            
-            System.out.println("U - Up");
-            System.out.println("D - Down");
-            System.out.println("L - Left");
-            System.out.println("R - Right");
-            
-            move = input.next().toLowerCase().charAt(0);
+            char move;
+            boolean existeMovimentacao = false;
+            // Scanner input = new Scanner(System.in);
 
-            existeMovimentacao = movimentar(move, p, tabuleiro); // Usa metodo movimentar dentro da classe jogador
+            while (!existeMovimentacao)
+            {
+                if(p instanceof JogadorSimples)
+                {
+                    System.out.printf("\n\nPara onde deseja movimentar PLAYER 1 (P1)?\n");
+                }
+                else
+                {
+                    System.out.printf("\n\nPara onde deseja movimentar PLAYER 2 (P2)?\n");
+                }
+                
+                System.out.println("U - Up");
+                System.out.println("D - Down");
+                System.out.println("L - Left");
+                System.out.println("R - Right");
+                
+                move = input.next().toLowerCase().charAt(0);
+
+                existeMovimentacao = movimentar(move, p, tabuleiro);
+            }
         }
     }
 
@@ -329,13 +338,7 @@ public abstract class Principal
                 return true;
             }
         }
-        /*else if(move == 'U' || move == 'D' || move == 'L' || move == 'R')
-        {
-            if(p.movimentar(p, move,tabuleiro))
-            {   
-                return true;
-            }
-        }*/
+
         System.out.println("Tecla inválida.");
         return false;
     }
@@ -346,27 +349,23 @@ public abstract class Principal
         int linha, coluna;
         
         pos = p.getPos();
-        // Verificar se é necessário o atributo posição em inimigo.
         linha = pos.getY();
         coluna = pos.getX();
+
         if( !tabuleiro[linha][coluna].visitado)
         {
-            System.out.println("Inimigos gerados");
-            // Gerar os inimigos
             int atk, def, numInimigos;
             Random random = new Random(); 
             numInimigos = random.nextInt(3) + 1;
 
             for(int i = 0; i < numInimigos; i++)
             {
-                // Gerar o ataque e defesa dos inimigos
                 atk = random.nextInt(3)+1;
                 def = atk;
 
                 Inimigo inimigo = new Inimigo(atk,def,pos);
                 tabuleiro[linha][coluna].setInimigo(inimigo);
             }
-            //int qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
 
             tabuleiro[linha][coluna].existeInimigo = true;
             tabuleiro[linha][coluna].setVisitado(true);
@@ -390,7 +389,7 @@ public abstract class Principal
         {
             System.out.println("Qual ação PLAYER 1 (P1) deseja realizar?");
 
-            if(tabuleiro[linha][coluna].existeInimigo)
+            if(tabuleiro[linha][coluna].existeInimigo) 
             {
                 System.out.println("A - Attack");
             }
@@ -398,6 +397,11 @@ public abstract class Principal
             if(tabuleiro[linha][coluna] instanceof SetorNormal || tabuleiro[linha][coluna] instanceof SetorOculto ) // != SetorPrivado
             {
                 System.out.println("S - Search");
+            }
+
+            if(!tabuleiro[linha][coluna].existeInimigo && tabuleiro[linha][coluna] instanceof SetorPrivado)
+            {
+                System.out.println("M - Movimentar para outro setor");
             }
         }
         else
@@ -422,38 +426,7 @@ public abstract class Principal
         System.out.println("acao : " + acao);
         return acao;
         
-        /* switch (acao) 
-        {    
-            case 'a':
-                if(tabuleiro[linha][coluna].existeInimigo)
-                {
-                    menuAtacar(p,tabuleiro);
-                }
-                break;
-             
-            case 's':
-                p.procurar(p,tabuleiro);
-                break;
-             
-            case 'r':  
-                if (p instanceof JogadorSuporte)
-                {
-                    p.recuperarDefesa(p1,p2,tabuleiro);
-                }
-                else
-                {
-                    System.out.println("Tecla inválida."); 
-                }
-                break;
-            
-            default:
-                System.out.println("Tecla inválida.");
-                break;
-        }
-        return '1';   */
     }
-
-    
 
     static void menuAtacar(Jogador p, Setor[][] tabuleiro)
     {
@@ -469,164 +442,87 @@ public abstract class Principal
         coluna = pos.getX();
 
         qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
-
-        while(!indiceValida)
+        if (qtdInimigos > 0)
         {
-            System.out.println("O Setor possui " + qtdInimigos + "." );
+            while(!indiceValida)
+            {
+                System.out.println("O Setor possui " + qtdInimigos + "." );
 
-            if(p instanceof JogadorSimples)
-            {
-                System.out.println("Qual inimigo PLAYER 1 (P1) deseja atacar?");
-            }
-            else
-            {
-                System.out.println("Qual inimigo PLAYER 2 (P2) deseja atacar?");
-            }
-            
-            for(int i = 0; i < qtdInimigos; i++)
-            {
-                atk = tabuleiro[linha][coluna].getInimigo(i).getAtk();
-                def = tabuleiro[linha][coluna].getInimigo(i).getDef();
+                if(p instanceof JogadorSimples)
+                {
+                    System.out.println("Qual inimigo PLAYER 1 (P1) deseja atacar?");
+                }
+                else
+                {
+                    System.out.println("Qual inimigo PLAYER 2 (P2) deseja atacar?");
+                }
+                
+                for(int i = 0; i < qtdInimigos; i++)
+                {
+                    atk = tabuleiro[linha][coluna].getInimigo(i).getAtk();
+                    def = tabuleiro[linha][coluna].getInimigo(i).getDef();
 
-                System.out.printf("%d - %d/%d\n", i+1, atk, def);
-            }
+                    System.out.printf("%d - %d/%d\n", i+1, atk, def);
+                }
 
-            indiceInimigo = input.nextInt();
+                indiceInimigo = input.nextInt();
 
-            if(indiceInimigo >= 1 && indiceInimigo <= qtdInimigos)
-            {
-                indiceValida=true;
-                p.atacar(indiceInimigo-1, p, tabuleiro, pos);
+                if(indiceInimigo >= 1 && indiceInimigo <= qtdInimigos)
+                {
+                    indiceValida=true;
+                    p.atacar(indiceInimigo-1, p, tabuleiro, pos);
+                }
+                else
+                {
+                    System.out.println("Indice do inimigo para atacar é inválido.");
+                } 
             }
-            else
-            {
-                System.out.println("Indice do inimigo para atacar é inválido.");
-            } 
         }
     }
 
-    static boolean ataqueInimigoTipo1(Jogador p1, Jogador p2, Setor[][] tabuleiro)
+    static void ataqueDeInimigo(Jogador p1, Jogador p2, Setor[][] tabuleiro)
     {
-        Posicao posP1, posP2;
-        int linhaP1, linhaP2, colunaP1, colunaP2, qtdInimigos;
 
-        Random random = new Random(); 
-        int numAleatorio, numJogador, def, atkInimigo;
+        int linhaP1, colunaP1, linhaP2, colunaP2;
+        Posicao posP1, posP2;
+        int qtdInimigos;
 
         posP1 = p1.getPos();
-        posP2 = p2.getPos();
-
         linhaP1 = posP1.getY();
-        linhaP2 = posP2.getY();
-
         colunaP1 = posP1.getX();
+
+        posP2 = p2.getPos();
+        linhaP2 = posP2.getY();
         colunaP2 = posP2.getX();
 
-        qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
-
-        // Caso os dois jogadores estejam no mesmo setor
         if(linhaP1 == linhaP2 && colunaP1 == colunaP2)
         {
-            for(int i = 0; i < qtdInimigos; i++)
+            qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+            for (int i = 0; i < qtdInimigos; i++)
             {
-                numAleatorio = random.nextInt(6)+1;
-                numJogador = random.nextInt(2)+1;
-                
-                atkInimigo = tabuleiro[linhaP1][colunaP1].getInimigo(i).getAtk();
-
-                if(numJogador == 1 && numAleatorio % 2 == 0)
-                {
-                    def = p1.getDef();
-                    p1.setDef(def - atkInimigo);
-                }
-                else if(numJogador == 2 && numAleatorio % 2 == 0)
-                {
-                    def = p2.getDef();
-                    p2.setDef(def - atkInimigo);
-                }
+                tabuleiro[linhaP1][colunaP1].getInimigo(i).ataqueDuplo(p1, p2, tabuleiro,i);
             }
-            return true;
         }
-        return false;
-    }
-
-    static void ataqueInimigoTipo2(Jogador p, Setor[][] tabuleiro)
-    {
-        Posicao pos;
-        int linha, coluna, qtdInimigos;
-
-        Random random = new Random(); 
-        int numAleatorio, defPlayer, atkInimigo;
-
-        pos = p.getPos();
-        linha = pos.getY();
-        coluna = pos.getX();
-
-        qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
-
-        for(int i = 0; i < qtdInimigos; i++)
+        else
         {
-            numAleatorio = random.nextInt(6)+1;
-            
-            atkInimigo = tabuleiro[linha][coluna].getInimigo(i).getAtk();
-
-            if(numAleatorio % 2 == 0)
+            qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+            for (int i = 0; i < qtdInimigos; i++) 
             {
-                defPlayer = p.getDef();
-                p.setDef(defPlayer - atkInimigo);
+                tabuleiro[linhaP1][colunaP1].getInimigo(i).ataqueUnico(p1,tabuleiro,i);
+            }
+
+            qtdInimigos = tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
+            for (int i = 0; i < qtdInimigos; i++)
+            {
+                tabuleiro[linhaP2][colunaP2].getInimigo(i).ataqueUnico(p2, tabuleiro,i);
             }
         }
     }
-
-    // static void recuperarJogador(Jogador p1, Jogador p2, Setor[][] tabuleiro)
-    // {
-    //     Posicao posP1, posP2;
-    //     int player, def;
-        
-    //     posP1 = p1.getPos();
-    //     posP2 = p2.getPos();
-
-    //     System.out.println("Entrou!!");
-        
-    //     if(posP1.getX() == posP2.getX() && posP1.getY() == posP2.getY())
-    //     {
-    //         // Scanner input = new Scanner(System.in);
-
-    //         System.out.println("Qual Jogador deseja recuperar?");
-    //         System.out.println("1 - P1");
-    //         System.out.println("2 - P2");
-
-    //         player = input.nextInt();
-
-    //         switch (player) 
-    //         {    
-    //             case 1:
-    //                 def = p1.getDef();
-    //                 p1.setDef(def+2);
-    //                 break;
-                
-    //             case 2:
-    //                 def = p2.getDef();
-    //                 p2.setDef(def+2);
-    //                 break;
-                
-    //             default:
-    //                 System.out.println("Tecla inválida.");
-    //                 break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         def = p2.getDef();
-    //         p2.setDef(def+2); 
-    //         System.out.println("nova vida de p2: "+ p2.getDef());  
-    //     }
-    // }
-
 
     public static void main(String[] args) 
     {
-        int linha, coluna, ciclo;
+        int linhaP1, colunaP1, linhaP2, colunaP2,ciclo,numAcao;
+
         char acao; 
         Posicao posInfeccao = new Posicao();
         Setor[][] tabuleiro = new Setor[NUM_LIN][NUM_COL];
@@ -658,186 +554,115 @@ public abstract class Principal
         // Scanner input = new Scanner(System.in);
 
         System.out.printf("InfY: %d , InfX: %d\n", posInfeccao.getY(), posInfeccao.getX());
-
+        
+        // Verificar erro quando a entrada eh char no lugar de int e vice versa
+        // Nao remove inimigo depois que morreu
+        // deixa o mapa do jeito que deveria ser com as portas e paredes
         do
         {
             posP1 = p1.getPos();
-            linha = posP1.getY();
-            coluna = posP1.getX();
-
-            System.out.println("P1: " + "Y: "+ linha + " X: " + coluna);
-
-            if(tabuleiro[linha][coluna].existeInimigo) // criar função pra isso
-            {   
-                acaoValida = false;         
-                while (!acaoValida)
-                {
-                    acao = escolheAcao(p1, tabuleiro);
-                    
-                    switch(acao) 
-                    {    
-                        case 'a':
-                            acaoValida = true;
-                            menuAtacar(p1,tabuleiro);
-                            break;
-                        
-                        case 's':
-                            acaoValida = true;
-                            p1.procurar(p1,tabuleiro);
-                            break;
-
-                        default:
-                            System.out.println("Tecla inválida.");
-                            break;
-                    }
-
-                    if(!ataqueInimigoTipo1(p1, p2, tabuleiro))
-                    {
-                        ataqueInimigoTipo2(p2, tabuleiro);
-                    }
-                    System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
-                    System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef());
-                }
-            }
-            else
-            {
-                menuMovimentar(p1,tabuleiro);
-                gerarInimigo(p1,tabuleiro);
-
-                acaoValida = false;
-
-                while (!acaoValida)
-                {
-                    acao = escolheAcao(p1,tabuleiro);
-                    
-                    switch (acao) 
-                    {    
-                        case 'a':
-                            acaoValida = true;
-                            menuAtacar(p1,tabuleiro);
-                            break;
-                        
-                        case 's':
-                            acaoValida = true;
-                            p1.procurar(p1,tabuleiro);
-                            break;
-                        
-                        default:
-                            System.out.println("Tecla inválida.");
-                            break;
-                    }   
-                }
-
-                if(!ataqueInimigoTipo1(p1, p2, tabuleiro))
-                {
-                    ataqueInimigoTipo2(p1, tabuleiro);
-                }
-
-                System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
-                System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef());
-            }
+            linhaP1 = posP1.getY();
+            colunaP1 = posP1.getX();
+            numAcao=1;
             
-            System.out.println("P1: " + "Y: "+ linha + " X: " + coluna);
+            // P1 turno
+            System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
 
+            menuMovimentar(p1,tabuleiro);
+            gerarInimigo(p1,tabuleiro);
+
+            acaoValida = false;
+
+            while (!acaoValida || numAcao<=2)
+            {
+                acao = escolheAcao(p1,tabuleiro);
+                    
+                switch (acao) 
+                {    
+                    case 'a':
+                        numAcao++;
+                        acaoValida = true;
+                        menuAtacar(p1,tabuleiro);
+                        break;
+                        
+                    case 's':
+                        numAcao++;
+                        acaoValida = true;
+                        p1.procurar(p1,tabuleiro);
+                        break;
+                    case 'm':
+                        numAcao=1;
+                        acaoValida = true;
+                        menuMovimentar(p1,tabuleiro);
+                        break;
+                        
+                    default:
+                        System.out.println("Tecla inválida.");
+                        break;
+                }   
+            }            
+            
+            linhaP1 = posP1.getY();
+            colunaP1 = posP1.getX();
+            System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
+
+            // P2 turno
             posP2 = p2.getPos();
-            linha = posP2.getY();
-            coluna = posP2.getX(); 
+            linhaP2 = posP2.getY();
+            colunaP2 = posP2.getX();
+            numAcao=1;
             
-            System.out.println("P2: " + "Y: "+ linha + " X: " + coluna);
+            System.out.println("P2: " + "Y: "+ linhaP2 + " X: " + colunaP2);
 
-            if(tabuleiro[linha][coluna].existeInimigo)
+            menuMovimentar(p2,tabuleiro);
+            gerarInimigo(p2,tabuleiro);
+
+            acaoValida = false;
+
+            while (!acaoValida || numAcao<=2)
             {
-                acaoValida = false;
-                while (!acaoValida)
-                {
-                    acao = escolheAcao(p2, tabuleiro);
-                    
-                    switch (acao) 
-                    {    
-                        case 'a':
-                            acaoValida = true;
-                            menuAtacar(p2,tabuleiro);
-                            break;
-                        
-                        case 's':
-                            acaoValida = true;
-                            p2.procurar(p2,tabuleiro);
-                            break;
-                        
-                        case 'r':
-                            acaoValida = true;
-                            if(p2 instanceof JogadorSuporte)
-                            {
-                                JogadorSuporte jogadorP2 = (JogadorSuporte) p2;
-                                jogadorP2.recuperarDefesa(p1,p2,tabuleiro);
-                            }
-                            break;
-                        
-                        default:
-                            System.out.println("Tecla inválida.");
-                            break;
-                    }
+                acao = escolheAcao(p2,tabuleiro);
 
-                    if(!ataqueInimigoTipo1(p1, p2, tabuleiro))
-                    {
-                        ataqueInimigoTipo2(p2, tabuleiro);
-                    }
-
-                    System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
-                    System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef());
+                switch (acao) 
+                {    
+                    case 'a':
+                        numAcao++;
+                        acaoValida = true;
+                        menuAtacar(p2,tabuleiro);
+                        break;
+                        
+                    case 's':
+                        numAcao++;
+                        acaoValida = true;
+                        p2.procurar(p2,tabuleiro);
+                        break;
+                        
+                    case 'r':
+                        numAcao++;
+                        acaoValida = true;
+                        if(p2 instanceof JogadorSuporte)
+                        {
+                            JogadorSuporte jogadorP2 = (JogadorSuporte) p2;
+                            jogadorP2.recuperarDefesa(p1,p2,tabuleiro);
+                        }
+                        break;
+                        
+                    default:
+                        System.out.println("Tecla inválida.");
+                        break;
                 }
             }
-            else
-            {
-                menuMovimentar(p2,tabuleiro);
-                gerarInimigo(p2,tabuleiro);
 
-                acaoValida = false;
+            linhaP2 = posP2.getY();
+            colunaP2 = posP2.getX();
+            System.out.println("P2: " + "Y: "+ linhaP2 + " X: " + colunaP2);
+            
+            ataqueDeInimigo(p1, p2,tabuleiro);
 
-                while (!acaoValida)
-                {
-                    acao = escolheAcao(p2,tabuleiro);
-
-                    switch (acao) 
-                    {    
-                        case 'a':
-                            acaoValida = true;
-                            menuAtacar(p2,tabuleiro);
-                            break;
-                        
-                        case 's':
-                            acaoValida = true;
-                            p2.procurar(p2,tabuleiro);
-                            break;
-                        
-                        case 'r':
-                            acaoValida = true;
-                            if(p2 instanceof JogadorSuporte)
-                            {
-                                JogadorSuporte jogadorP2 = (JogadorSuporte) p2;
-                                jogadorP2.recuperarDefesa(p1,p2,tabuleiro);
-                            }
-                            break;
-                        
-                        default:
-                            System.out.println("Tecla inválida.");
-                            break;
-                    }
-                }
-
-                if(!ataqueInimigoTipo1(p1, p2, tabuleiro))
-                {
-                    ataqueInimigoTipo2(p2, tabuleiro);
-                }
-
-                System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
-                System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef());  
-            }
+            System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
+            System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
 
             ciclo++;
-
-            System.out.println("P2: " + "Y: "+ linha + " X: " + coluna);
-
         }while( (!achouFonte(p1,p2,posInfeccao)) && (ciclo <= 25) && (p1EstaVivo(p1)) );
 
         input.close();

@@ -40,7 +40,6 @@ public abstract class Jogador
     }
 
     // Outro métodos
-    public void atacar(){}
     
     public boolean movimentar(Jogador p, char direcao, Setor[][] tabuleiro)
     {
@@ -90,41 +89,45 @@ public abstract class Jogador
         Posicao pos;
         int linha, coluna;
         int defPlayer;
-            
-        Random random = new Random(); 
-        int numAleatorio = random.nextInt(6)+1;
 
         defPlayer = p.getDef();
         pos = p.getPos();
         linha = pos.getY();
         coluna = pos.getX();
-
-        if(numAleatorio == 4)
+        
+        if(!(tabuleiro[linha][coluna] instanceof SetorPrivado))
         {
-            defPlayer = defPlayer + 1;
-            p.setDef(defPlayer);
-        }
-        else if(numAleatorio == 5)
-        {
-            defPlayer = defPlayer + 2;
-            p.setDef(defPlayer);
-        }
-        else if(numAleatorio == 6)
-        {
-            int qtdInimigos;
-            int defInimigo;
+            Random random = new Random(); 
+            int numAleatorio = random.nextInt(6)+1;
 
-            qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
-            
-            for (int i = 0; i < qtdInimigos; i++) 
-            {    
-                defInimigo = tabuleiro[linha][coluna].getInimigo(i).getDef();
-                
-                defInimigo = defInimigo - 1;
-
-                tabuleiro[linha][coluna].getInimigo(i).setDef(defInimigo);
+            if(numAleatorio == 4)
+            {
+                defPlayer = defPlayer + 1;
+                p.setDef(defPlayer);
             }
-            
+            else if(numAleatorio == 5)
+            {
+                defPlayer = defPlayer + 2;
+                p.setDef(defPlayer);
+            }
+            else if(numAleatorio == 6)
+            {
+                int qtdInimigos;
+                int defInimigo;
+
+                qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
+                
+                for (int i = 0; i < qtdInimigos; i++) 
+                {    
+                    defInimigo = tabuleiro[linha][coluna].getInimigo(i).getDef();
+                    
+                    defInimigo = defInimigo - 1;
+
+                    tabuleiro[linha][coluna].getInimigo(i).setDef(defInimigo);
+                }
+                
+            }
+            System.out.printf("\n\t\t Vida Player: %d.\n", p.getDef());
         }
         
     }
@@ -158,7 +161,8 @@ public abstract class Jogador
                 }
                 else
                 {
-                    tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
+                    tabuleiro[linha][coluna].getInimigo(indiceInimigo).setDef(0);
+                    //tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
                 }
             }  
         }
@@ -171,16 +175,24 @@ public abstract class Jogador
             }
             else
             {
-                tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
+                tabuleiro[linha][coluna].getInimigo(indiceInimigo).setDef(0);
+                //tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
             } 
         }
 
         int qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
 
-        if(qtdInimigos < 1)
+        boolean existeVida = false;
+        for(int i = 0; i < qtdInimigos; i++)
         {
-            tabuleiro[linha][coluna].existeInimigo = false;
+            int def = tabuleiro[linha][coluna].getInimigo(i).getDef();
+            if(def > 0)
+            {
+                existeVida = true;
+            }
         }
+
+        tabuleiro[linha][coluna].existeInimigo = existeVida;
 
         for(int i = 0; i < qtdInimigos; i++)
         {
