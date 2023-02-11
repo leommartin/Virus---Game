@@ -127,7 +127,16 @@ public abstract class Jogador
                 }
                 
             }
-            System.out.printf("\n\t\t Vida Player: %d.\n", p.getDef());
+
+            if ( p instanceof JogadorSimples)
+            {
+                System.out.printf("\n\t\t Vida P1: %d.\n", p.getDef());
+            }
+            else
+            {
+                System.out.printf("\n\t\t Vida P2: %d.\n", p.getDef());
+            }
+            
         }
         
     }

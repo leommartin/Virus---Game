@@ -266,15 +266,13 @@ public abstract class Principal
         return false;
     }
 
-    static boolean achouFonte(Jogador p1, Jogador p2, Posicao posInfeccao)
+    static boolean achouFonte(Jogador p, Posicao posInfeccao)
     {
-        Posicao posPlayer1;
-        Posicao posPlayer2;
+        Posicao posPlayer;
 
-        posPlayer1 = p1.getPos();
-        posPlayer2 = p2.getPos();
+        posPlayer = p.getPos();
     
-        if (existeColisao(posPlayer1,posInfeccao) || existeColisao(posPlayer2,posInfeccao) )
+        if (existeColisao(posPlayer, posInfeccao))
         {
             return true;
         }
@@ -300,7 +298,7 @@ public abstract class Principal
         linha = pos.getY();
         coluna = pos.getX();
         
-        if (!tabuleiro[linha][coluna].existeInimigo)
+        if(!tabuleiro[linha][coluna].existeInimigo)
         {
             char move;
             boolean existeMovimentacao = false;
@@ -494,34 +492,45 @@ public abstract class Principal
         posP2 = p2.getPos();
         linhaP2 = posP2.getY();
         colunaP2 = posP2.getX();
-
+        
         if(linhaP1 == linhaP2 && colunaP1 == colunaP2)
         {
-            qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
-            for (int i = 0; i < qtdInimigos; i++)
+            if (tabuleiro[linhaP1][colunaP1].existeInimigo)
             {
-                tabuleiro[linhaP1][colunaP1].getInimigo(i).ataqueDuplo(p1, p2, tabuleiro,i);
+                qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+                for (int i = 0; i < qtdInimigos; i++)
+                {
+                    tabuleiro[linhaP1][colunaP1].getInimigo(i).ataqueDuplo(p1, p2, tabuleiro,i);
+                }
             }
+            
         }
         else
         {
-            qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
-            for (int i = 0; i < qtdInimigos; i++) 
+            if (tabuleiro[linhaP1][colunaP1].existeInimigo)
             {
-                tabuleiro[linhaP1][colunaP1].getInimigo(i).ataqueUnico(p1,tabuleiro,i);
+                qtdInimigos = tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+                for (int i = 0; i < qtdInimigos; i++) 
+                {
+                    tabuleiro[linhaP1][colunaP1].getInimigo(i).ataqueUnico(p1,tabuleiro,i);
+                }
             }
-
-            qtdInimigos = tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
-            for (int i = 0; i < qtdInimigos; i++)
+            
+            if (tabuleiro[linhaP2][colunaP2].existeInimigo)
             {
-                tabuleiro[linhaP2][colunaP2].getInimigo(i).ataqueUnico(p2, tabuleiro,i);
+                qtdInimigos = tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
+                for (int i = 0; i < qtdInimigos; i++)
+                {
+                    tabuleiro[linhaP2][colunaP2].getInimigo(i).ataqueUnico(p2, tabuleiro,i);
+                }
             }
+            
         }
     }
 
     public static void main(String[] args) 
     {
-        int linhaP1, colunaP1, linhaP2, colunaP2,ciclo,numAcao;
+        int linhaP1, colunaP1, linhaP2, colunaP2, ciclo, numAcao;
 
         char acao; 
         Posicao posInfeccao = new Posicao();
@@ -569,6 +578,13 @@ public abstract class Principal
             System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
 
             menuMovimentar(p1,tabuleiro);
+
+            if(achouFonte(p1, posInfeccao))
+            {
+                System.out.println("P1 encontrou a fonte e venceu o jogo!");
+                System.exit(0);
+            }
+
             gerarInimigo(p1,tabuleiro);
 
             acaoValida = false;
@@ -594,6 +610,12 @@ public abstract class Principal
                         numAcao=1;
                         acaoValida = true;
                         menuMovimentar(p1,tabuleiro);
+                        if(achouFonte(p1, posInfeccao))
+                        {
+                            System.out.println("P1 encontrou a fonte e venceu o jogo!");
+                            System.exit(0);
+                        }
+
                         break;
                         
                     default:
@@ -605,6 +627,9 @@ public abstract class Principal
             linhaP1 = posP1.getY();
             colunaP1 = posP1.getX();
             System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
+            
+            System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
+            System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
 
             // P2 turno
             posP2 = p2.getPos();
@@ -615,6 +640,12 @@ public abstract class Principal
             System.out.println("P2: " + "Y: "+ linhaP2 + " X: " + colunaP2);
 
             menuMovimentar(p2,tabuleiro);
+            if(achouFonte(p2, posInfeccao))
+            {
+                System.out.println("P2 encontrou a fonte e venceu o jogo!");
+                System.exit(0);
+            }
+
             gerarInimigo(p2,tabuleiro);
 
             acaoValida = false;
@@ -663,7 +694,7 @@ public abstract class Principal
             System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
 
             ciclo++;
-        }while( (!achouFonte(p1,p2,posInfeccao)) && (ciclo <= 25) && (p1EstaVivo(p1)) );
+        }while((ciclo <= 25) && (p1EstaVivo(p1)));
 
         input.close();
     }

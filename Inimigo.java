@@ -117,7 +117,7 @@ public class Inimigo
         atkInimigo = tabuleiro[linha][coluna].getInimigo(indiceInimigo).getAtk();
         defInimigo = tabuleiro[linha][coluna].getInimigo(indiceInimigo).getDef();
 
-        if(numAleatorio % 2 == 0)
+        if(numAleatorio % 2 == 0 && defInimigo > 0)
         {
             System.out.println("Ataque de inimigo realizado no P1 ou P2");
             defPlayer = p.getDef();
