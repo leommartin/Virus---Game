@@ -1,4 +1,4 @@
-
+import java.util.Random;
 public abstract class Jogador
 {
     protected Posicao pos;
@@ -36,14 +36,7 @@ public abstract class Jogador
     }
     public void setDef(int def) 
     {
-        if(def > 7)
-        {
-            this.def = 7;
-        }
-        else
-        {
-            this.def = def;
-        }
+        this.def = def;
     }
 
     // Outro métodos
@@ -92,6 +85,110 @@ public abstract class Jogador
         return false;
     }
 
-    public void procurar(){}
+    public void procurar(Jogador p, Setor[][] tabuleiro)
+    {
+        Posicao pos;
+        int linha, coluna;
+        int defPlayer;
+            
+        Random random = new Random(); 
+        int numAleatorio = random.nextInt(6)+1;
+
+        defPlayer = p.getDef();
+        pos = p.getPos();
+        linha = pos.getY();
+        coluna = pos.getX();
+
+        if(numAleatorio == 4)
+        {
+            defPlayer = defPlayer + 1;
+            p.setDef(defPlayer);
+        }
+        else if(numAleatorio == 5)
+        {
+            defPlayer = defPlayer + 2;
+            p.setDef(defPlayer);
+        }
+        else if(numAleatorio == 6)
+        {
+            int qtdInimigos;
+            int defInimigo;
+
+            qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
+            
+            for (int i = 0; i < qtdInimigos; i++) 
+            {    
+                defInimigo = tabuleiro[linha][coluna].getInimigo(i).getDef();
+                
+                defInimigo = defInimigo - 1;
+
+                tabuleiro[linha][coluna].getInimigo(i).setDef(defInimigo);
+            }
+            
+        }
+        
+    }
+
+    public void atacar(int indiceInimigo, Jogador p, Setor[][] tabuleiro, Posicao pos)
+    {
+        int linha, coluna;
+        int atkPlayer;
+        int defInimigo;
+        
+        linha = pos.getY();
+        coluna = pos.getX();
+
+        atkPlayer = p.getAtk();
+
+        defInimigo = tabuleiro[linha][coluna].getInimigo(indiceInimigo).getDef();
+
+        // Ataque do jogador em setor Oculto
+        if(tabuleiro[linha][coluna] instanceof SetorOculto)
+        {
+            Random random = new Random(); 
+            int numAleatorio = random.nextInt(1);
+            
+            if(numAleatorio != 0)
+            {
+                defInimigo = defInimigo - atkPlayer;
+
+                if(defInimigo > 0)
+                {
+                    tabuleiro[linha][coluna].getInimigo(indiceInimigo).setDef(defInimigo);
+                }
+                else
+                {
+                    tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
+                }
+            }  
+        }
+        else
+        {
+            defInimigo = defInimigo - atkPlayer;
+            if(defInimigo > 0)
+            {
+                tabuleiro[linha][coluna].getInimigo(indiceInimigo).setDef(defInimigo);
+            }
+            else
+            {
+                tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
+            } 
+        }
+
+        int qtdInimigos = tabuleiro[linha][coluna].getListaDeInimigos().size();
+
+        if(qtdInimigos < 1)
+        {
+            tabuleiro[linha][coluna].existeInimigo = false;
+        }
+
+        for(int i = 0; i < qtdInimigos; i++)
+        {
+            int atk = tabuleiro[linha][coluna].getInimigo(i).getAtk();
+            int def = tabuleiro[linha][coluna].getInimigo(i).getDef();
+
+            System.out.printf("%d - %d/%d\n", i+1, atk, def);
+        }
+    }
     
 }
