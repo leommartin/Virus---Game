@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;;
 
 public class JogadorSuporte extends Jogador
 {
@@ -29,26 +29,37 @@ public class JogadorSuporte extends Jogador
                 System.out.println("1 - P1");
                 System.out.println("2 - P2");
 
-                player = input.nextInt();
 
-                switch (player) 
-                {    
-                    case 1:
-                        acaoValida = true;
-                        def = p1.getDef();
-                        p1.setDef(def+2);
-                        break;
-                    
-                    case 2:
-                        acaoValida = true;
-                        def = p2.getDef();
-                        p2.setDef(def+2);
-                        break;
-                    
-                    default:
-                        System.out.println("Tecla inválida.");
-                        break;
+                try 
+                {
+                    player = input.nextInt();
+
+                    switch (player) 
+                    {    
+                        case 1:
+                            acaoValida = true;
+                            def = p1.getDef();
+                            p1.setDef(def+2);
+                            break;
+                        
+                        case 2:
+                            acaoValida = true;
+                            def = p2.getDef();
+                            p2.setDef(def+2);
+                            break;
+                        
+                        default:
+                            System.out.println("Indice inválido.");
+                            break;
+                    }
+            
                 }
+                catch (InputMismatchException err)
+                {
+                    System.out.println("Tecla inválido. Tente novamente!");
+                    input.next();
+                }
+                
             }
         }
         else

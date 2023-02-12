@@ -3,8 +3,7 @@ import java.util.*;
 // import java.util.Random;
 // import java.util.Scanner;
 
-// To do: Escrever a matriz
-// Nao deixa o jogo interrompe se apertar uma letra quando tá esperando um numeros
+// To do: Verificar portas para colocar parede
 
 public abstract class Principal
 {
@@ -50,7 +49,7 @@ public abstract class Principal
         return false;
     }
 
-    static boolean p1EstaVivo(Jogador p) // criar uma unica funcao
+    static boolean playerEstaVivo(Jogador p) // criar uma unica funcao
     {
         if(p.getDef() > 0)
         {
@@ -59,14 +58,14 @@ public abstract class Principal
         return false;
     }
 
-    static boolean p2EstaVivo(Jogador p) // criar uma unica funcao
+    /* static boolean p2EstaVivo(Jogador p) // criar uma unica funcao
     {
         if(p.getDef() > 0)
         {
             return true;
         }
         return false;
-    }
+    } */
     
     static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
@@ -242,17 +241,27 @@ public abstract class Principal
                     System.out.printf("%d - %d/%d\n", i+1, atk, def);
                 }
 
-                indiceInimigo = input.nextInt();
-
-                if((indiceInimigo >= 1) && (indiceInimigo <= qtdInimigos))
+                try 
                 {
-                    indiceValido = true;
-                    p.atacar(indiceInimigo-1, p, tabuleiro, pos);
+                    indiceInimigo = input.nextInt();
+                    if((indiceInimigo >= 1) && (indiceInimigo <= qtdInimigos))
+                    {
+                        indiceValido = true;
+                        p.atacar(indiceInimigo-1, p, tabuleiro, pos);
+                    }
+                    else
+                    {
+                        System.out.println("Indice do inimigo para atacar é inválido.");
+                    }
+            
                 }
-                else
+                catch (InputMismatchException err)
                 {
-                    System.out.println("Indice do inimigo para atacar é inválido.");
-                } 
+                    System.out.println("Tecla inválido. Tente novamente!");
+                    input.next();
+                }
+
+                 
             }
         }
     }
@@ -340,12 +349,11 @@ public abstract class Principal
         // Scanner input = new Scanner(System.in);
 
         System.out.printf("InfY: %d , InfX: %d\n", posInfeccao.getY(), posInfeccao.getX());
-        
-        // Verificar erro quando a entrada eh char no lugar de int e vice versa
-        // Nao remove inimigo depois que morreu
-        // deixa o mapa do jeito que deveria ser com as portas e paredes
+     
         do
         {
+            tab.imprimeTabuleiro(tabuleiro, p1, p2);
+
             posP1 = p1.getPos();
             linhaP1 = posP1.getY();
             colunaP1 = posP1.getX();
@@ -409,7 +417,7 @@ public abstract class Principal
             System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
 
             // P2 turno
-            if(p2EstaVivo(p2))
+            if(playerEstaVivo(p2))
             {
                 posP2 = p2.getPos();
                 linhaP2 = posP2.getY();
@@ -475,7 +483,7 @@ public abstract class Principal
             System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
 
             ciclo++;
-        } while((ciclo <= 25) && (p1EstaVivo(p1)));
+        } while((ciclo <= 25) && (playerEstaVivo(p1)));
 
         input.close();
     }

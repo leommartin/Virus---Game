@@ -4,25 +4,112 @@ public class Tabuleiro
     public static final int NUM_COL = 5;
     public static final int NUM_LIN = 5;
 
-    public void imprimeTabuleiro(Setor[][] tabuleiro)
+    public void imprimeTabuleiro(Setor[][] tabuleiro, Jogador p1, Jogador p2)
     {
+        int i;
         System.out.printf("\n\n");
 
-        for(int i = 0; i < NUM_LIN; i++)
+        for(i = 0; i < NUM_LIN; i++)
         {
-            for(int j = 0; j < NUM_COL; j++)
-            {
-                imprimeSetor(tabuleiro,i,j);
-            }
+            imprimeCima(tabuleiro,i);
+            imprimeMeio(tabuleiro, i, p1, p2);
+            // imprimeBaixo(tabuleiro,i);
         }
+            imprimeFim(tabuleiro,i);
 
         System.out.printf("\n\n");
 
     }
 
-    public void imprimeSetor(Setor[][] tabuleiro, int linha, int coluna)
+    public void imprimeCima(Setor[][] tabuleiro, int linha)
     {
-        System.out.printf("|---|\n|   |\n|---|");
+        Porta portaSetor;
+
+        int coluna = 0;
+
+        for(coluna = 0; coluna < NUM_COL; coluna++)
+        {
+            portaSetor = tabuleiro[linha][coluna].getPorta();
+
+            if(tabuleiro[linha][coluna].visitado && portaSetor.isAcima())
+            {
+                System.out.print("|-*-");
+            }
+            else
+            {
+                System.out.print("|---");
+            }
+        }
+        System.out.printf("|\n");
+    }
+
+    public void imprimeMeio(Setor[][] tabuleiro, int linha, Jogador p1, Jogador p2)
+    {
+        Porta portaSetor;
+        Posicao posP1, posP2;
+        boolean posIguais = false;
+        int linhaP1, linhaP2, colunaP1, colunaP2;
+
+        posP1 = p1.getPos();
+        posP2 = p2.getPos();
+
+        linhaP1 = posP1.getY();
+        linhaP2 = posP2.getY();
+
+        colunaP1 = posP1.getX();
+        colunaP2 = posP2.getX();
+
+        if(linhaP1 == linhaP2 && colunaP1 == colunaP2)
+        {
+            posIguais = true;
+        }
+        
+        for(int coluna = 0; coluna < NUM_COL; coluna++)
+        {
+            portaSetor = tabuleiro[linha][coluna].getPorta();
+            
+            if(tabuleiro[linha][coluna].visitado && (portaSetor.isEsquerda()))
+            {
+                System.out.print("*");
+            }
+            else
+            {
+                System.out.print("|");
+            }
+            
+
+            if(posIguais && ((linhaP1 == linha) && (colunaP1 == coluna)))
+            {
+                System.out.print("P12");
+            }
+            else
+            {
+                if((colunaP1 == coluna) && (linhaP1 == linha))
+                {
+                    System.out.print("P1 ");
+                }
+                else if((colunaP2 == coluna) && (linhaP2 == linha))
+                {
+                    System.out.print("P2 ");
+                }
+                else
+                {
+                    System.out.print("   ");
+                }
+            } 
+        }
+        System.out.print("|\n");
+    }
+
+    public void imprimeFim(Setor[][] tabuleiro, int linha)
+    {
+        for(int coluna = 0; coluna < NUM_COL; coluna++)
+        {
+            {
+                System.out.print("|---");
+            }
+        }
+        System.out.print("|");
     }
 
     public void criarTabuleiro(Setor[][] tabuleiro, int linha, int coluna)
@@ -69,6 +156,7 @@ public class Tabuleiro
     // Fim do instanciamento de setores
     
     }
+
 
     public void criarPortas(Setor[][] tabuleiro, int linha, int coluna, int posCentralY, int posCentralX)
     {
