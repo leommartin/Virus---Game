@@ -110,7 +110,7 @@ public class Inimigo
         pos = p.getPos();
 
         linha = pos.getY();
-        coluna = pos.getY();
+        coluna = pos.getX();
 
         numAleatorio = random.nextInt(6)+1;
                 
@@ -119,7 +119,6 @@ public class Inimigo
 
         if(numAleatorio % 2 == 0 && defInimigo > 0)
         {
-            System.out.println("Ataque de inimigo realizado no P1 ou P2");
             defPlayer = p.getDef();
                     
             defPlayer = defPlayer - atkInimigo;
