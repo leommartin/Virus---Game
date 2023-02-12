@@ -349,11 +349,11 @@ public abstract class Principal
         // Scanner input = new Scanner(System.in);
 
         System.out.printf("InfY: %d , InfX: %d\n", posInfeccao.getY(), posInfeccao.getX());
-     
+
+        tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
+        
         do
         {
-            tab.imprimeTabuleiro(tabuleiro, p1, p2);
-
             posP1 = p1.getPos();
             linhaP1 = posP1.getY();
             colunaP1 = posP1.getX();
@@ -363,13 +363,14 @@ public abstract class Principal
             System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
 
             menuMovimentar(p1,tabuleiro);
+            tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
             if(achouFonte(p1, posInfeccao))
             {
                 System.out.println("P1 encontrou a fonte e venceu o jogo!");
                 System.exit(0);
             }
-
+            
             gerarInimigo(p1,tabuleiro);
 
             acaoValida = false;
@@ -426,12 +427,17 @@ public abstract class Principal
                 
                 System.out.println("P2: " + "Y: "+ linhaP2 + " X: " + colunaP2);
 
+                tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
+
                 menuMovimentar(p2,tabuleiro);
+                
                 if(achouFonte(p2, posInfeccao))
                 {
                     System.out.println("P2 encontrou a fonte e venceu o jogo!");
                     System.exit(0);
                 }
+
+                tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
                 gerarInimigo(p2,tabuleiro);
 

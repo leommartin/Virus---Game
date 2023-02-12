@@ -4,7 +4,7 @@ public class Tabuleiro
     public static final int NUM_COL = 5;
     public static final int NUM_LIN = 5;
 
-    public void imprimeTabuleiro(Setor[][] tabuleiro, Jogador p1, Jogador p2)
+    public void imprimeTabuleiro(Setor[][] tabuleiro, Jogador p1, Jogador p2, Posicao posInfeccao)
     {
         int i;
         System.out.printf("\n\n");
@@ -12,8 +12,7 @@ public class Tabuleiro
         for(i = 0; i < NUM_LIN; i++)
         {
             imprimeCima(tabuleiro,i);
-            imprimeMeio(tabuleiro, i, p1, p2);
-            // imprimeBaixo(tabuleiro,i);
+            imprimeMeio(tabuleiro, i, p1, p2, posInfeccao);
         }
             imprimeFim(tabuleiro,i);
 
@@ -39,16 +38,29 @@ public class Tabuleiro
             {
                 System.out.print("|---");
             }
+
+            /*if(tabuleiro[linha][coluna].visitado && portaSetor.isAbaixo())
+            {
+                System.out.print("|-*-");
+            }
+            else
+            {
+                System.out.print("|---");
+            }*/
         }
         System.out.printf("|\n");
     }
 
-    public void imprimeMeio(Setor[][] tabuleiro, int linha, Jogador p1, Jogador p2)
+    public void imprimeMeio(Setor[][] tabuleiro, int linha, Jogador p1, Jogador p2, Posicao posInfeccao)
     {
         Porta portaSetor;
         Posicao posP1, posP2;
         boolean posIguais = false;
         int linhaP1, linhaP2, colunaP1, colunaP2;
+        int posInfeccaoX, posInfeccaoY;
+
+        posInfeccaoX = posInfeccao.getX();
+        posInfeccaoY = posInfeccao.getY();
 
         posP1 = p1.getPos();
         posP2 = p2.getPos();
@@ -91,6 +103,10 @@ public class Tabuleiro
                 else if((colunaP2 == coluna) && (linhaP2 == linha))
                 {
                     System.out.print("P2 ");
+                }
+                else if((posInfeccaoX == coluna) && (posInfeccaoY == linha))
+                {
+                    System.out.print(" X ");
                 }
                 else
                 {
