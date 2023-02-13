@@ -1,6 +1,4 @@
 import java.util.*;
-
-import javax.lang.model.util.ElementScanner14;
 public class Tabuleiro
 {
     public static final int NUM_COL = 5;
@@ -82,11 +80,6 @@ public class Tabuleiro
         {
             portaSetor = tabuleiro[linha][coluna].getPorta();
             
-            // if(tabuleiro[linha][coluna].visitado && (portaSetor.isEsquerda()))
-            // {
-            //     System.out.print("*");
-            // }
-
             if(posIguais && ((linhaP1 == linha) && (colunaP1 == coluna)))
             {
                 System.out.print("P12");

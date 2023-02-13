@@ -402,6 +402,8 @@ public abstract class Principal
                             System.out.println("P1 encontrou a fonte e venceu o jogo!");
                             System.exit(0);
                         }
+                        gerarInimigo(p1,tabuleiro);
+                        tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
                         break;
                         
