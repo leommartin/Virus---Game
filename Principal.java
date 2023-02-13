@@ -363,8 +363,7 @@ public abstract class Principal
             System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
 
             menuMovimentar(p1,tabuleiro);
-            tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
-
+            
             if(achouFonte(p1, posInfeccao))
             {
                 System.out.println("P1 encontrou a fonte e venceu o jogo!");
@@ -372,6 +371,8 @@ public abstract class Principal
             }
             
             gerarInimigo(p1,tabuleiro);
+
+            tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
             acaoValida = false;
 
@@ -437,10 +438,10 @@ public abstract class Principal
                     System.exit(0);
                 }
 
-                tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
-
                 gerarInimigo(p2,tabuleiro);
 
+                tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
+                
                 acaoValida = false;
 
                 while (!acaoValida || numAcao <= 2)

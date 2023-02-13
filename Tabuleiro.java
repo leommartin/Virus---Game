@@ -1,4 +1,6 @@
 import java.util.*;
+
+import javax.lang.model.util.ElementScanner14;
 public class Tabuleiro
 {
     public static final int NUM_COL = 5;
@@ -9,18 +11,18 @@ public class Tabuleiro
         int i;
         System.out.printf("\n\n");
 
+        imprimeFim(tabuleiro,0);
+
         for(i = 0; i < NUM_LIN; i++)
         {
-            imprimeCima(tabuleiro,i);
             imprimeMeio(tabuleiro, i, p1, p2, posInfeccao);
+            imprimeAbaixo(tabuleiro,i);
         }
-            imprimeFim(tabuleiro,i);
 
         System.out.printf("\n\n");
-
     }
 
-    public void imprimeCima(Setor[][] tabuleiro, int linha)
+    public void imprimeAbaixo(Setor[][] tabuleiro, int linha)
     {
         Porta portaSetor;
 
@@ -30,23 +32,22 @@ public class Tabuleiro
         {
             portaSetor = tabuleiro[linha][coluna].getPorta();
 
-            if(tabuleiro[linha][coluna].visitado && portaSetor.isAcima())
+            if(tabuleiro[linha][coluna].visitado && portaSetor.isAbaixo())
             {
                 System.out.print("|-*-");
+            }
+            else if(linha < 4 && tabuleiro[linha+1][coluna].visitado)
+            {
+                Porta portaProxSetor =  tabuleiro[linha+1][coluna].getPorta() ;
+                if(portaProxSetor.isAcima())
+                {
+                    System.out.print("|-*-");
+                }
             }
             else
             {
                 System.out.print("|---");
             }
-
-            /*if(tabuleiro[linha][coluna].visitado && portaSetor.isAbaixo())
-            {
-                System.out.print("|-*-");
-            }
-            else
-            {
-                System.out.print("|---");
-            }*/
         }
         System.out.printf("|\n");
     }
@@ -76,19 +77,15 @@ public class Tabuleiro
             posIguais = true;
         }
         
+        System.out.print("|");
         for(int coluna = 0; coluna < NUM_COL; coluna++)
         {
             portaSetor = tabuleiro[linha][coluna].getPorta();
             
-            if(tabuleiro[linha][coluna].visitado && (portaSetor.isEsquerda()))
-            {
-                System.out.print("*");
-            }
-            else
-            {
-                System.out.print("|");
-            }
-            
+            // if(tabuleiro[linha][coluna].visitado && (portaSetor.isEsquerda()))
+            // {
+            //     System.out.print("*");
+            // }
 
             if(posIguais && ((linhaP1 == linha) && (colunaP1 == coluna)))
             {
@@ -113,8 +110,25 @@ public class Tabuleiro
                     System.out.print("   ");
                 }
             } 
+
+            if(tabuleiro[linha][coluna].visitado && (portaSetor.isDireita()))
+            {
+                System.out.print("*");
+            }
+            else if(coluna < 4 && tabuleiro[linha][coluna+1].visitado)
+            {
+                Porta portaProxSetor =  tabuleiro[linha][coluna+1].getPorta() ;
+                if(portaProxSetor.isEsquerda())
+                {
+                    System.out.print("*");
+                }
+            }
+            else
+            {
+                System.out.print("|");
+            }
         }
-        System.out.print("|\n");
+        System.out.print("\n");
     }
 
     public void imprimeFim(Setor[][] tabuleiro, int linha)
@@ -125,7 +139,7 @@ public class Tabuleiro
                 System.out.print("|---");
             }
         }
-        System.out.print("|");
+        System.out.print("|\n");
     }
 
     public void criarTabuleiro(Setor[][] tabuleiro, int linha, int coluna)
