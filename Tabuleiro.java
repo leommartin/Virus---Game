@@ -7,22 +7,52 @@ public class Tabuleiro
     public void imprimeTabuleiro(Setor[][] tabuleiro, Jogador p1, Jogador p2, Posicao posInfeccao)
     {
         int i;
-        System.out.printf("\n\n");
-
+        System.out.printf("\n");
+        System.out.printf("----------------------------\n");
+        System.out.printf("|   Antivirus por um dia   |\n");
+        System.out.printf("----------------------------\n");
+        
         imprimeFim(tabuleiro,0);
+        imprimePosicoes(p1,p2);
 
         for(i = 0; i < NUM_LIN; i++)
         {
             imprimeMeio(tabuleiro, i, p1, p2, posInfeccao);
-            imprimeAbaixo(tabuleiro,i);
+            imprimeCimaAbaixo(tabuleiro,i, p1, p2);
+
         }
 
         System.out.printf("\n");
     }
 
-    public void imprimeAbaixo(Setor[][] tabuleiro, int linha)
+    public void imprimePosicoes(Jogador p1, Jogador p2)
     {
-        Porta portaSetor;
+        Posicao posP1, posP2;
+        int linhaP1,colunaP1, linhaP2, colunaP2;
+
+        posP1 = p1.getPos();
+        posP2 = p2.getPos();
+
+        linhaP1 = posP1.getY();
+        linhaP2 = posP2.getY();
+
+        colunaP1 = posP1.getX();
+        colunaP2 = posP2.getX();
+
+        System.out.printf("\t\tP1: Setor [%d,%d]    P2: Setor [%d,%d]\n", linhaP1, colunaP1, linhaP2, colunaP2);
+    }
+
+
+    public void imprimeCimaAbaixo(Setor[][] tabuleiro, int linha, Jogador p1, Jogador p2)
+    {
+        Porta portaSetor, portaSetorP1, portaSetorP2;
+        Posicao posP1, posP2;
+
+        posP1 = p1.getPos();
+        posP2 = p2.getPos();
+
+        portaSetorP1 = tabuleiro[posP1.getY()][posP1.getX()].getPorta();
+        portaSetorP2 = tabuleiro[posP2.getY()][posP2.getX()].getPorta();      
 
         int coluna = 0;
 
@@ -47,22 +77,105 @@ public class Tabuleiro
                 System.out.print("|---");
             }
         }
-        System.out.printf("|\n");
+        System.out.printf("|");
+
+        if(linha == 0)
+        {
+            System.out.printf("\t\t|------");
+            if(portaSetorP1.isAcima())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("-");
+            }
+            System.out.printf("------|");
+
+            System.out.printf("    |------");
+            if(portaSetorP2.isAcima())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("-");
+            }
+            System.out.printf("------|");
+        }
+        else if(linha == 3)
+        {
+            System.out.printf("\t\t|------");
+            if(portaSetorP1.isAbaixo())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("-");
+            }
+            System.out.printf("------|");
+
+            System.out.printf("    |------");
+            if(portaSetorP2.isAbaixo())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("-");
+            }
+            System.out.printf("------|");
+        }
+        else if(linha == 1)
+        {
+            System.out.printf("\t\t|             |");
+            System.out.printf("    |             |");
+        }
+        else if(linha == 2)
+        {
+            System.out.printf("\t\t|  P1    ");
+            if(posP1.getX() == posP2.getX() && posP1.getY() == posP2.getY())
+            {
+                System.out.printf("P2");
+            }
+            else
+            {
+                System.out.printf("  ");
+            }
+            System.out.printf("   |");
+            System.out.printf("    |  ");
+            if(posP1.getX() == posP2.getX() && posP1.getY() == posP2.getY())
+            {
+                System.out.printf("P1");
+            }
+            else
+            {
+                System.out.printf("  ");
+            }
+            System.out.printf("    P2");
+            System.out.printf("   |");
+        }
+        System.out.printf("\n");
     }
 
     public void imprimeMeio(Setor[][] tabuleiro, int linha, Jogador p1, Jogador p2, Posicao posInfeccao)
     {
-        Porta portaSetor;
+        Porta portaSetor, portaSetorP1, portaSetorP2;
         Posicao posP1, posP2;
         boolean posIguais = false;
         int linhaP1, linhaP2, colunaP1, colunaP2;
-        int posInfeccaoX, posInfeccaoY;
+        int posInfeccaoX, posInfeccaoY, qtdInimigos;
+        int def, atk;
 
         posInfeccaoX = posInfeccao.getX();
         posInfeccaoY = posInfeccao.getY();
 
         posP1 = p1.getPos();
         posP2 = p2.getPos();
+
+        portaSetorP1 = tabuleiro[posP1.getY()][posP1.getX()].getPorta();
+        portaSetorP2 = tabuleiro[posP2.getY()][posP2.getX()].getPorta(); 
 
         linhaP1 = posP1.getY();
         linhaP2 = posP2.getY();
@@ -121,18 +234,127 @@ public class Tabuleiro
                 System.out.print("|");
             }
         }
+       
+        if (linha == 1)
+        {
+            System.out.print("\t\t| ");
+            if (tabuleiro[linhaP1][colunaP1].existeInimigo)
+            {
+                qtdInimigos= tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+                int resto= 3-qtdInimigos;
+                for (int i = 0; i < qtdInimigos; i++)
+                {
+                    def=tabuleiro[linhaP1][colunaP1].getInimigo(i).getAtk();
+                    atk=tabuleiro[linhaP1][colunaP1].getInimigo(i).getDef();
+                    System.out.printf("%d/%d ", atk, def);
+                }
+
+                if (resto == 1)
+                {
+                    System.out.printf("     ");
+                }
+                else if (resto == 2)
+                {
+                    System.out.printf("   ");
+                }
+
+                System.out.print("|");
+            }
+            else
+            {
+    
+                System.out.printf("\t      |");
+                
+            }
+            
+            if (tabuleiro[linhaP2][colunaP2].existeInimigo)
+            {
+                qtdInimigos= tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
+                int resto= 3-qtdInimigos;
+                for (int i = 0; i < qtdInimigos; i++)
+                {
+                    def=tabuleiro[linhaP2][colunaP2].getInimigo(i).getAtk();
+                    atk=tabuleiro[linhaP2][colunaP2].getInimigo(i).getDef();
+                    System.out.printf("%d/%d ", atk, def);
+                }
+
+                if (resto == 1)
+                {
+                    System.out.printf("     ");
+                }
+                else if (resto == 2)
+                {
+                    System.out.printf("   ");
+                }
+
+                System.out.print("|");
+            }
+            else
+            {
+                
+                System.out.printf("    |");
+                System.out.printf("\t\t |");
+
+            }
+        }
+        else if(linha == 2)
+        {
+            System.out.printf("\t\t");
+            if(portaSetorP1.isEsquerda())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("|");
+            }
+            
+            System.out.printf("             ");
+
+            if(portaSetorP1.isDireita())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("|");
+            }
+            System.out.printf("    ");
+
+            if(portaSetorP2.isEsquerda())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("|");
+            }
+            
+            System.out.printf("             ");
+
+            if(portaSetorP2.isDireita())
+            {
+                System.out.printf("*");
+            }
+            else
+            {
+                System.out.printf("|");
+            }
+        }
+
+        // final da escrita de vidas de inimigoy
         System.out.print("\n");
+        
     }
 
     public void imprimeFim(Setor[][] tabuleiro, int linha)
     {
         for(int coluna = 0; coluna < NUM_COL; coluna++)
         {
-            {
-                System.out.print("|---");
-            }
+            System.out.print("|---");
+            
         }
-        System.out.print("|\n");
+        System.out.print("|");
     }
 
     public void criarTabuleiro(Setor[][] tabuleiro, int linha, int coluna)

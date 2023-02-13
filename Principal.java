@@ -198,8 +198,6 @@ public abstract class Principal
         }
         
         acao = input.next().toLowerCase().charAt(0);
-
-        System.out.println("acao : " + acao);
         return acao;
         
     }
@@ -222,7 +220,6 @@ public abstract class Principal
         {
             while(!indiceValido)
             {
-                System.out.println("O Setor possui " + qtdInimigos + "." );
 
                 if(p instanceof JogadorSimples)
                 {
@@ -393,7 +390,7 @@ public abstract class Principal
                             System.exit(0);
                         }
                         gerarInimigo(p1,tabuleiro);
-                        // tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
+                        tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
                         break;
                         
@@ -464,6 +461,10 @@ public abstract class Principal
 
                 linhaP2 = posP2.getY();
                 colunaP2 = posP2.getX();            
+            }
+            else
+            {
+                System.out.println("P2 morreu");
             }
 
             ataqueDeInimigo(p1, p2,tabuleiro);
