@@ -171,7 +171,6 @@ public abstract class Jogador
                 else
                 {
                     tabuleiro[linha][coluna].getInimigo(indiceInimigo).setDef(0);
-                    //tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
                 }
             }  
         }
@@ -185,7 +184,6 @@ public abstract class Jogador
             else
             {
                 tabuleiro[linha][coluna].getInimigo(indiceInimigo).setDef(0);
-                //tabuleiro[linha][coluna].getListaDeInimigos().remove(indiceInimigo);
             } 
         }
 

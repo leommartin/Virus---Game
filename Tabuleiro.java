@@ -238,24 +238,24 @@ public class Tabuleiro
         if (linha == 1)
         {
             System.out.print("\t\t| ");
-            if (tabuleiro[linhaP1][colunaP1].existeInimigo)
+            qtdInimigos= tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
+            if (qtdInimigos != 0)
             {
-                qtdInimigos= tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
                 int resto= 3-qtdInimigos;
                 for (int i = 0; i < qtdInimigos; i++)
                 {
-                    def=tabuleiro[linhaP1][colunaP1].getInimigo(i).getAtk();
-                    atk=tabuleiro[linhaP1][colunaP1].getInimigo(i).getDef();
+                    atk=tabuleiro[linhaP1][colunaP1].getInimigo(i).getAtk();
+                    def=tabuleiro[linhaP1][colunaP1].getInimigo(i).getDef();
                     System.out.printf("%d/%d ", atk, def);
                 }
 
                 if (resto == 1)
                 {
-                    System.out.printf("     ");
+                    System.out.printf("    ");
                 }
                 else if (resto == 2)
                 {
-                    System.out.printf("   ");
+                    System.out.printf("\t      ");
                 }
 
                 System.out.print("|");
@@ -267,24 +267,26 @@ public class Tabuleiro
                 
             }
             
-            if (tabuleiro[linhaP2][colunaP2].existeInimigo)
+            qtdInimigos= tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
+            if (qtdInimigos != 0)
             {
-                qtdInimigos= tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
+                System.out.printf("\t   | ");
+                
                 int resto= 3-qtdInimigos;
                 for (int i = 0; i < qtdInimigos; i++)
                 {
-                    def=tabuleiro[linhaP2][colunaP2].getInimigo(i).getAtk();
-                    atk=tabuleiro[linhaP2][colunaP2].getInimigo(i).getDef();
+                    atk=tabuleiro[linhaP2][colunaP2].getInimigo(i).getAtk();
+                    def=tabuleiro[linhaP2][colunaP2].getInimigo(i).getDef();
                     System.out.printf("%d/%d ", atk, def);
                 }
 
                 if (resto == 1)
                 {
-                    System.out.printf("     ");
+                    System.out.printf("    ");
                 }
                 else if (resto == 2)
                 {
-                    System.out.printf("   ");
+                    System.out.printf("        ");
                 }
 
                 System.out.print("|");
@@ -341,8 +343,15 @@ public class Tabuleiro
                 System.out.printf("|");
             }
         }
+        else if ( linha == 3)
+        {
+            System.out.printf("\t\t|");
+            System.out.printf("\t      |");
+            System.out.printf("\t   |");
+            System.out.printf("\t         |");
+        } 
 
-        // final da escrita de vidas de inimigoy
+        // final da escrita de vidas de inimigo
         System.out.print("\n");
         
     }
