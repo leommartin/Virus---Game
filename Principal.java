@@ -86,11 +86,11 @@ public abstract class Principal
             {
                 if(p instanceof JogadorSimples)
                 {
-                    System.out.printf("\n\nPara onde deseja movimentar PLAYER 1 (P1)?\n");
+                    System.out.printf("Para onde deseja movimentar PLAYER 1 (P1)?\n");
                 }
                 else
                 {
-                    System.out.printf("\n\nPara onde deseja movimentar PLAYER 2 (P2)?\n");
+                    System.out.printf("Para onde deseja movimentar PLAYER 2 (P2)?\n");
                 }
                 
                 System.out.println("U - Up");
@@ -344,24 +344,15 @@ public abstract class Principal
 
         gerarPosicaoInfeccao(posInfeccao);
 
-        //laco principal
-
-        // Scanner input = new Scanner(System.in);
-
-        System.out.printf("InfY: %d , InfX: %d\n", posInfeccao.getY(), posInfeccao.getX());
-
-        tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
-        
+        //Laço Principal
         do
-        {
+        {            
             posP1 = p1.getPos();
             linhaP1 = posP1.getY();
             colunaP1 = posP1.getX();
-            numAcao=1;
+            numAcao = 1;
             
-            // P1 turno
-            System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
-
+            tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
             menuMovimentar(p1,tabuleiro);
             
             if(achouFonte(p1, posInfeccao))
@@ -371,12 +362,11 @@ public abstract class Principal
             }
             
             gerarInimigo(p1,tabuleiro);
-
+            
             tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
             acaoValida = false;
-
-            while (!acaoValida || numAcao<=2)
+            while (!acaoValida || numAcao <= 2)
             {
                 acao = escolheAcao(p1,tabuleiro);
                     
@@ -403,7 +393,7 @@ public abstract class Principal
                             System.exit(0);
                         }
                         gerarInimigo(p1,tabuleiro);
-                        tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
+                        // tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
                         break;
                         
@@ -415,10 +405,6 @@ public abstract class Principal
             
             linhaP1 = posP1.getY();
             colunaP1 = posP1.getX();
-            System.out.println("P1: " + "Y: "+ linhaP1 + " X: " + colunaP1);
-            
-            System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
-            System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
 
             // P2 turno
             if(playerEstaVivo(p2))
@@ -428,10 +414,7 @@ public abstract class Principal
                 colunaP2 = posP2.getX();
                 numAcao = 1;
                 
-                System.out.println("P2: " + "Y: "+ linhaP2 + " X: " + colunaP2);
-
                 tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
-
                 menuMovimentar(p2,tabuleiro);
                 
                 if(achouFonte(p2, posInfeccao))
@@ -445,7 +428,6 @@ public abstract class Principal
                 tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
                 
                 acaoValida = false;
-
                 while (!acaoValida || numAcao <= 2)
                 {
                     acao = escolheAcao(p2,tabuleiro);
@@ -481,18 +463,13 @@ public abstract class Principal
                 }
 
                 linhaP2 = posP2.getY();
-                colunaP2 = posP2.getX();
-                System.out.println("P2: " + "Y: "+ linhaP2 + " X: " + colunaP2);
-            
+                colunaP2 = posP2.getX();            
             }
 
             ataqueDeInimigo(p1, p2,tabuleiro);
-
-            System.out.printf("\n\t\t Vida P1: %d.", p1.getDef());
-            System.out.printf("\n\t\t Vida P2: %d.\n", p2.getDef()); 
-
             ciclo++;
-        } while((ciclo <= 25) && (playerEstaVivo(p1)));
+        } 
+        while((ciclo <= 25) && (playerEstaVivo(p1)));
 
         input.close();
     }

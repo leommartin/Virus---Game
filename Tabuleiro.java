@@ -17,7 +17,7 @@ public class Tabuleiro
             imprimeAbaixo(tabuleiro,i);
         }
 
-        System.out.printf("\n\n");
+        System.out.printf("\n");
     }
 
     public void imprimeAbaixo(Setor[][] tabuleiro, int linha)
