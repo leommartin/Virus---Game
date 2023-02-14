@@ -345,10 +345,32 @@ public class Tabuleiro
         }
         else if ( linha == 3)
         {
-            System.out.printf("\t\t|");
-            System.out.printf("\t      |");
-            System.out.printf("\t   |");
-            System.out.printf("\t         |");
+            if (linhaP1 == linhaP2 && colunaP1 == colunaP2)
+            {
+                int atkP1, defP1, atkP2, defP2;
+                atkP1= p1.getAtk();
+                defP1=p1.getDef();
+                atkP2= p2.getAtk();
+                defP2=p2.getDef();
+                System.out.printf("\t\t|  %d/%d",atkP1,defP1);
+                System.out.printf("\t %d/%d  |",atkP2,defP2);
+                
+                System.out.printf("\t   |  %d/%d ",atkP1,defP1);
+                System.out.printf("  %d/%d  |",atkP2,defP2);
+
+            }
+            else
+            {
+                atk= p1.getAtk();
+                def=p1.getDef();
+                System.out.printf("\t\t|  %d/%d",atk,def);
+                System.out.printf("\t      |");
+                atk= p2.getAtk();
+                def=p2.getDef();
+                System.out.printf("\t   |\t    %d/%d",atk,def);
+                System.out.printf("  |");
+            }
+            
         } 
 
         // final da escrita de vidas de inimigo

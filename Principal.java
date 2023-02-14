@@ -472,6 +472,15 @@ public abstract class Principal
         } 
         while((ciclo <= 25) && (playerEstaVivo(p1)));
 
+        if (ciclo > 25)
+        {
+            System.out.println("Perdeu, Numero de ciclo excedido");
+        }
+        else if (p1.getDef() < 1)
+        {
+            System.out.println("Perdeu, P1 morreu");
+        }
+
         input.close();
     }
 }

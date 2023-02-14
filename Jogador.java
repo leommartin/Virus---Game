@@ -121,7 +121,11 @@ public abstract class Jogador
                 {    
                     defInimigo = tabuleiro[linha][coluna].getInimigo(i).getDef();
                     
-                    defInimigo = defInimigo - 1;
+                    if (defInimigo > 0)
+                    {
+                        defInimigo = defInimigo - 1;
+                    }
+                    
 
                     tabuleiro[linha][coluna].getInimigo(i).setDef(defInimigo);
                 }
