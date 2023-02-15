@@ -307,24 +307,20 @@ public abstract class Principal
 
     public static void main(String[] args) 
     {
-        int ciclo, numAcao;
-
-        char acao; 
+        Jogador p1, p2;
         Posicao posInfeccao = new Posicao();
+        Posicao posP1 = new Posicao();
+        Posicao posP2 = new Posicao();
         Tabuleiro tab = new Tabuleiro();
-        Setor[][] tabuleiro= new Setor[NUM_LIN][NUM_COL];
-        boolean acaoValida = false;
-
+        Setor[][] tabuleiro = new Setor[NUM_LIN][NUM_COL];
         
+        int ciclo, numAcao;
+        char acao; 
+        boolean acaoValida = false;
+       
         ciclo = 0;
         tab.criarTabuleiro(tabuleiro,NUM_LIN,NUM_COL);
         tab.criarPortas(tabuleiro,NUM_LIN,NUM_COL,POS_CENTRAL_X,POS_CENTRAL_Y);
-
-        Jogador p1;
-        Jogador p2;
-        
-        Posicao posP1 = new Posicao();
-        Posicao posP2 = new Posicao();
         
         posP1.setX(POS_CENTRAL_X);
         posP1.setY(POS_CENTRAL_Y);
@@ -355,6 +351,7 @@ public abstract class Principal
             tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
 
             acaoValida = false;
+            // Criar um menu para isso (menuAcao) e diminuir o código main
             while (!acaoValida || numAcao <= 2)
             {
                 acao = escolheAcao(p1,tabuleiro);
