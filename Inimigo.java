@@ -61,7 +61,6 @@ public class Inimigo
 
         if(numAleatorio % 2 == 0 && defInimigo > 0)
         {
-            System.out.println("Ataque de inimigo realizado no P1");
             defPlayer = p1.getDef();
                     
             defPlayer = defPlayer - atkInimigo;
@@ -81,7 +80,6 @@ public class Inimigo
 
         if(numAleatorio % 2 == 0 && defInimigo > 0)
         {
-            System.out.println("Ataque de inimigo realizado no P2");
             defPlayer = p2.getDef();
                     
             defPlayer = defPlayer - atkInimigo;

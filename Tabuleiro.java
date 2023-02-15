@@ -239,64 +239,83 @@ public class Tabuleiro
         {
             System.out.print("\t\t| ");
             qtdInimigos= tabuleiro[linhaP1][colunaP1].getListaDeInimigos().size();
-            if (qtdInimigos != 0)
+            if (!(tabuleiro[linhaP1][colunaP1] instanceof SetorOculto))
             {
-                int resto= 3-qtdInimigos;
-                for (int i = 0; i < qtdInimigos; i++)
+                if (qtdInimigos != 0)
                 {
-                    atk=tabuleiro[linhaP1][colunaP1].getInimigo(i).getAtk();
-                    def=tabuleiro[linhaP1][colunaP1].getInimigo(i).getDef();
-                    System.out.printf("%d/%d ", atk, def);
-                }
+                    int resto= 3-qtdInimigos;
+                    for (int i = 0; i < qtdInimigos; i++)
+                    {
+                        atk=tabuleiro[linhaP1][colunaP1].getInimigo(i).getAtk();
+                        def=tabuleiro[linhaP1][colunaP1].getInimigo(i).getDef();
+                        System.out.printf("%d/%d ", atk, def);
+                    }
 
-                if (resto == 1)
-                {
-                    System.out.printf("    ");
-                }
-                else if (resto == 2)
-                {
-                    System.out.printf("\t      ");
-                }
+                    if (resto == 1)
+                    {
+                        System.out.printf("    ");
+                    }
+                    else if (resto == 2)
+                    {
+                        System.out.printf("\t      ");
+                    }
 
-                System.out.print("|");
+                    System.out.print("|");
+                }
+                else
+                {
+        
+                    System.out.printf("\t      |");
+                    
+                }
             }
             else
             {
-    
-                System.out.printf("\t      |");
-                
+                {
+        
+                    System.out.printf("\t      |");
+                    
+                }
             }
             
             qtdInimigos= tabuleiro[linhaP2][colunaP2].getListaDeInimigos().size();
-            if (qtdInimigos != 0)
+            if (!(tabuleiro[linhaP1][colunaP1] instanceof SetorOculto))
             {
-                System.out.printf("\t   | ");
-                
-                int resto= 3-qtdInimigos;
-                for (int i = 0; i < qtdInimigos; i++)
+                if (qtdInimigos != 0)
                 {
-                    atk=tabuleiro[linhaP2][colunaP2].getInimigo(i).getAtk();
-                    def=tabuleiro[linhaP2][colunaP2].getInimigo(i).getDef();
-                    System.out.printf("%d/%d ", atk, def);
-                }
+                    System.out.printf("\t   | ");
+                    
+                    int resto= 3-qtdInimigos;
+                    for (int i = 0; i < qtdInimigos; i++)
+                    {
+                        atk=tabuleiro[linhaP2][colunaP2].getInimigo(i).getAtk();
+                        def=tabuleiro[linhaP2][colunaP2].getInimigo(i).getDef();
+                        System.out.printf("%d/%d ", atk, def);
+                    }
 
-                if (resto == 1)
-                {
-                    System.out.printf("    ");
-                }
-                else if (resto == 2)
-                {
-                    System.out.printf("        ");
-                }
+                    if (resto == 1)
+                    {
+                        System.out.printf("    ");
+                    }
+                    else if (resto == 2)
+                    {
+                        System.out.printf("        ");
+                    }
 
-                System.out.print("|");
+                    System.out.print("|");
+                }
+                else
+                {
+                    
+                    System.out.printf("    |");
+                    System.out.printf("\t\t |");
+
+                }
             }
             else
             {
-                
                 System.out.printf("    |");
                 System.out.printf("\t\t |");
-
             }
         }
         else if(linha == 2)
@@ -348,6 +367,7 @@ public class Tabuleiro
             if (linhaP1 == linhaP2 && colunaP1 == colunaP2)
             {
                 int atkP1, defP1, atkP2, defP2;
+                
                 atkP1= p1.getAtk();
                 defP1=p1.getDef();
                 atkP2= p2.getAtk();
@@ -421,6 +441,7 @@ public class Tabuleiro
                 if(j % 2 == 0 && j != 2)
                 {
                     tabuleiro[i][j] = new SetorOculto();
+                    System.out.printf(" i:%d  j: %d",i, j);
                 }
                 else
                 {

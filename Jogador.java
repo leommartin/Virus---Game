@@ -205,13 +205,6 @@ public abstract class Jogador
 
         tabuleiro[linha][coluna].existeInimigo = existeVida;
 
-        for(int i = 0; i < qtdInimigos; i++)
-        {
-            int atk = tabuleiro[linha][coluna].getInimigo(i).getAtk();
-            int def = tabuleiro[linha][coluna].getInimigo(i).getDef();
-
-            System.out.printf("%d - %d/%d\n", i+1, atk, def);
-        }
     }
     
 }

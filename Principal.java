@@ -57,15 +57,6 @@ public abstract class Principal
         }
         return false;
     }
-
-    /* static boolean p2EstaVivo(Jogador p) // criar uma unica funcao
-    {
-        if(p.getDef() > 0)
-        {
-            return true;
-        }
-        return false;
-    } */
     
     static void menuMovimentar(Jogador p,Setor[][] tabuleiro)
     {
@@ -155,8 +146,6 @@ public abstract class Principal
         Posicao pos;
         int linha, coluna;
 
-        // Scanner input = new Scanner(System.in);
-
         pos = p.getPos();
         linha = pos.getY();
         coluna = pos.getX();
@@ -209,7 +198,6 @@ public abstract class Principal
         int linha, coluna, qtdInimigos;
         int atk, def;
         boolean indiceValido = false;
-        // Scanner input = new Scanner(System.in);
 
         pos = p.getPos();
         linha = pos.getY();
@@ -235,7 +223,14 @@ public abstract class Principal
                     atk = tabuleiro[linha][coluna].getInimigo(i).getAtk();
                     def = tabuleiro[linha][coluna].getInimigo(i).getDef();
 
-                    System.out.printf("%d - %d/%d\n", i+1, atk, def);
+                    if(!(tabuleiro[linha][coluna] instanceof SetorOculto))
+                    {
+                        System.out.printf("%d - %d/%d\n", i+1, atk, def);
+                    }
+                    else
+                    {
+                        System.out.printf("%d -?/?\n", i+1);
+                    }
                 }
 
                 try 
@@ -312,7 +307,7 @@ public abstract class Principal
 
     public static void main(String[] args) 
     {
-        int linhaP1, colunaP1, linhaP2, colunaP2, ciclo, numAcao;
+        int ciclo, numAcao;
 
         char acao; 
         Posicao posInfeccao = new Posicao();
@@ -344,9 +339,6 @@ public abstract class Principal
         //Laço Principal
         do
         {            
-            posP1 = p1.getPos();
-            linhaP1 = posP1.getY();
-            colunaP1 = posP1.getX();
             numAcao = 1;
             
             tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
@@ -399,16 +391,10 @@ public abstract class Principal
                         break;
                 }   
             }            
-            
-            linhaP1 = posP1.getY();
-            colunaP1 = posP1.getX();
 
             // P2 turno
             if(playerEstaVivo(p2))
             {
-                posP2 = p2.getPos();
-                linhaP2 = posP2.getY();
-                colunaP2 = posP2.getX();
                 numAcao = 1;
                 
                 tab.imprimeTabuleiro(tabuleiro, p1, p2, posInfeccao);
@@ -458,13 +444,11 @@ public abstract class Principal
                             break;
                     }
                 }
-
-                linhaP2 = posP2.getY();
-                colunaP2 = posP2.getX();            
+           
             }
             else
             {
-                System.out.println("P2 morreu");
+                System.out.println("Jogador P2 morreu!");
             }
 
             ataqueDeInimigo(p1, p2,tabuleiro);
@@ -474,11 +458,11 @@ public abstract class Principal
 
         if (ciclo > 25)
         {
-            System.out.println("Perdeu, Numero de ciclo excedido");
+            System.out.println("Fim do jogo. Numero de ciclos excedidos!");
         }
         else if (p1.getDef() < 1)
         {
-            System.out.println("Perdeu, P1 morreu");
+            System.out.println("Fim do jogo. Jogador P1 morreu!");
         }
 
         input.close();
