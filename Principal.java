@@ -3,7 +3,8 @@ import java.util.*;
 // import java.util.Random;
 // import java.util.Scanner;
 
-// To do: Verificar portas para colocar parede
+// Leonardo Marin Mendes Martin - GRR20205675
+// Georges Guy Gustinvil - GRR20199989
 
 public abstract class Principal
 {
