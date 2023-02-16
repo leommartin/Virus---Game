@@ -8,9 +8,9 @@ public class Tabuleiro
     {
         int i;
         System.out.printf("\n");
-        System.out.printf("----------------------------\n");
-        System.out.printf("|   Antivirus por um dia   |\n");
-        System.out.printf("----------------------------\n");
+        System.out.println("----------------------------");
+        System.out.println("|   Antivirus por um dia   |");
+        System.out.println("----------------------------");
         
         imprimeFim(tabuleiro,0);
         imprimePosicoes(p1,p2);
@@ -441,7 +441,6 @@ public class Tabuleiro
                 if(j % 2 == 0 && j != 2)
                 {
                     tabuleiro[i][j] = new SetorOculto();
-                    System.out.printf(" i:%d  j: %d",i, j);
                 }
                 else
                 {

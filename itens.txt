@@ -1,6 +1,0 @@
-Procurar no setor por itens. Esta procura consiste em sortear um número
-aleatório entre 1 e 6.
-i.  Para números entre 1 e 3, nada é encontrado no setor.
-ii. Para número igual a 4, o jogador ganha 1 de DEF.
-iii.Para número igual a 5, o jogador ganha 2 de DEF.
-iv. Para número igual a 6, todos os inimigos do setor perdem 1 de DEF.

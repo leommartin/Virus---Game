@@ -229,7 +229,7 @@ public abstract class Principal
                     }
                     else
                     {
-                        System.out.printf("%d -?/?\n", i+1);
+                        System.out.printf("%d - ?/?\n", i+1);
                     }
                 }
 

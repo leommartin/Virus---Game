@@ -53,7 +53,6 @@ public abstract class Jogador
 
         porta=tabuleiro[linha][coluna].getPorta();
 
-        // m[y][x] ; para alterar m[l][c], altere l
         if (!tabuleiro[linha][coluna].existeInimigo())
         {
             if(direcao == 'u')
@@ -130,15 +129,6 @@ public abstract class Jogador
                     tabuleiro[linha][coluna].getInimigo(i).setDef(defInimigo);
                 }
                 
-            }
-
-            if ( p instanceof JogadorSimples)
-            {
-                System.out.printf("\n\t\t Vida P1: %d.\n", p.getDef());
-            }
-            else
-            {
-                System.out.printf("\n\t\t Vida P2: %d.\n", p.getDef());
             }
             
         }
