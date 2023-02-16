@@ -125,7 +125,6 @@ public abstract class Jogador
                         defInimigo = defInimigo - 1;
                     }
                     
-
                     tabuleiro[linha][coluna].getInimigo(i).setDef(defInimigo);
                 }
                 

@@ -305,6 +305,20 @@ public abstract class Principal
         }
     }
 
+    static boolean existeInimigo(Setor[][]tabuleiro, Jogador p)
+    {
+        Posicao pos;
+
+        pos = p.getPos();
+
+        if(tabuleiro[pos.getY()][pos.getX()].existeInimigo)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) 
     {
         Jogador p1, p2;
@@ -361,7 +375,10 @@ public abstract class Principal
                     case 'a':
                         numAcao++;
                         acaoValida = true;
-                        menuAtacar(p1,tabuleiro);
+                        if(existeInimigo(tabuleiro, p1))
+                        {
+                            menuAtacar(p1,tabuleiro);
+                        }
                         break;
                         
                     case 's':
@@ -417,7 +434,10 @@ public abstract class Principal
                         case 'a':
                             numAcao++;
                             acaoValida = true;
-                            menuAtacar(p2,tabuleiro);
+                            if(existeInimigo(tabuleiro, p2))
+                            {
+                                menuAtacar(p2,tabuleiro);
+                            }
                             break;
                             
                         case 's':

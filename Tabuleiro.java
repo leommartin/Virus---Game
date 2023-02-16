@@ -19,7 +19,6 @@ public class Tabuleiro
         {
             imprimeMeio(tabuleiro, i, p1, p2, posInfeccao);
             imprimeCimaAbaixo(tabuleiro,i, p1, p2);
-
         }
 
         System.out.printf("\n");
@@ -228,6 +227,10 @@ public class Tabuleiro
                 {
                     System.out.print("*");
                 }
+                else
+                {
+                    System.out.print("|");
+                }
             }
             else
             {
@@ -320,6 +323,7 @@ public class Tabuleiro
         }
         else if(linha == 2)
         {
+            // printa quadrado p1
             System.out.printf("\t\t");
             if(portaSetorP1.isEsquerda())
             {
@@ -342,6 +346,7 @@ public class Tabuleiro
             }
             System.out.printf("    ");
 
+            //printa quadrado p2
             if(portaSetorP2.isEsquerda())
             {
                 System.out.printf("*");
@@ -370,8 +375,10 @@ public class Tabuleiro
                 
                 atkP1= p1.getAtk();
                 defP1=p1.getDef();
+                
                 atkP2= p2.getAtk();
                 defP2=p2.getDef();
+                
                 System.out.printf("\t\t|  %d/%d",atkP1,defP1);
                 System.out.printf("\t %d/%d  |",atkP2,defP2);
                 
@@ -381,12 +388,15 @@ public class Tabuleiro
             }
             else
             {
-                atk= p1.getAtk();
-                def=p1.getDef();
+                atk = p1.getAtk();
+                def = p1.getDef();
+                
                 System.out.printf("\t\t|  %d/%d",atk,def);
                 System.out.printf("\t      |");
-                atk= p2.getAtk();
-                def=p2.getDef();
+                
+                atk = p2.getAtk();
+                def = p2.getDef();
+                
                 System.out.printf("\t   |\t    %d/%d",atk,def);
                 System.out.printf("  |");
             }
@@ -453,187 +463,84 @@ public class Tabuleiro
     
     }
 
-
     public void criarPortas(Setor[][] tabuleiro, int linha, int coluna, int posCentralY, int posCentralX)
     {
-        Random random = new Random();
-        int[] numAleatorio = new int[4];
-        
+        Porta portaAnterior;
+
         for (int i = 0; i < linha; i++) 
         {
             for (int j = 0; j < coluna; j++) 
             {
-                Porta portaAnterior;
                 Porta p = new Porta();
 
-                // [0] acima
-                // [1] abaixo
-                // [2] esquerda
-                // [3] direita 
-
-                for(int indice = 0; indice < 4; indice++)
-                {
-                    // numAleatorio[indice] = random.nextInt(2);
-                    numAleatorio[indice] = 1;  
-                }
-                
-                // Primeira linha
+                // Definindo Portas Cima/Baixo e Limites
                 if(i == 0)
                 {
-                    p.setAcima(false); // seta porta acima == false se tiver na 1a linha
-                    
-                    // seta porta abaixo true or false
-                    if (numAleatorio[1] == 1)
-                    {
-                        p.setAbaixo(true); 
-                    }
-                    else
-                    {
-                        p.setAbaixo(false); 
-                    }
-                    
-                    
-                    if(j == 0)
-                    {
-                        p.setEsquerda(false); // seta porta esquerda == false se tiver na 1a coluna
-
-                        // seta porta direita true or false
-                        if (numAleatorio[3] == 1)
-                        {
-                            p.setDireita(true); 
-                        }
-                        else
-                        {
-                            p.setDireita(false); 
-                        }
-                    }
-                    else if(j < coluna-1)
-                    {
-                        portaAnterior=tabuleiro[i][j-1].getPorta();
-
-                        p.setEsquerda(portaAnterior.isDireita());
-                        if (numAleatorio[3] == 1)
-                        {
-                            p.setDireita(true); 
-                        }
-                        else
-                        {
-                            p.setDireita(false); 
-                        }
-                    }   
-                    else
-                    {         
-                        portaAnterior = tabuleiro[i][j-1].getPorta();
-
-                        p.setDireita(false); // seta porta direita == false se tiver na ultima coluna
-                        p.setEsquerda(portaAnterior.isDireita()); // seta porta esquerda conforme a porta da coluna anterior
-                    }
-                }
-                // Fim primeira linha
-
-                else if(i < linha-1)
-                {
-                    //p.setAbaixo(false);
-                    portaAnterior = tabuleiro[i-1][j].getPorta();
-
-                    //p.setAcima(false); // seta porta direita == false se tiver na ultima coluna
-                    p.setAcima(portaAnterior.isAbaixo());
-                    if (numAleatorio[1] == 1)
-                    {
-                        p.setAbaixo(true); 
-                    }
-                    else
-                    {
-                        p.setAbaixo(false); 
-                    }
-
-                    if(j == 0)
-                    {
-                        p.setEsquerda(false); 
-        
-                        if (numAleatorio[3] == 1)
-                        {
-                            p.setDireita(true); 
-                        }
-                        else
-                        {
-                            p.setDireita(false); 
-                        }
-                    }
-                    else if(j < coluna-1)
-                    {
-                        portaAnterior=tabuleiro[i][j-1].getPorta();
-
-                        p.setEsquerda(portaAnterior.isDireita());
-                        if (numAleatorio[3] == 1)
-                        {
-                            p.setDireita(true); 
-                        }
-                        else
-                        {
-                            p.setDireita(false); 
-                        }
-                    }   
-                    else
-                    {         
-                        portaAnterior = tabuleiro[i][j-1].getPorta();
-
-                        p.setDireita(false); // seta porta direita == false se tiver na ultima coluna
-                        p.setEsquerda(portaAnterior.isDireita()); // seta porta esquerda conforme a porta da coluna anterior
-                    }
-
+                    p.setAcima(false);
                 }
                 else
                 {
+                    p.setAcima(true);
+                }
+
+                if(i == 4)
+                {
                     p.setAbaixo(false);
-                    portaAnterior = tabuleiro[i-1][j].getPorta();
-                    p.setAcima(portaAnterior.isAbaixo());
-                    
-                    if(j == 0)
-                    {
-                        p.setEsquerda(false); 
-        
-                        if (numAleatorio[3] == 1)
-                        {
-                            p.setDireita(true); 
-                        }
-                        else
-                        {
-                            p.setDireita(false); 
-                        }
-                    }
-                    else if(j < coluna-1)
-                    {
-                        portaAnterior=tabuleiro[i][j-1].getPorta();
+                }
+                else
+                {
+                    p.setAbaixo(true);
+                }
+                // Fim da Definição
 
-                        p.setEsquerda(portaAnterior.isDireita());
-                        if (numAleatorio[3] == 1)
-                        {
-                            p.setDireita(true); 
-                        }
-                        else
-                        {
-                            p.setDireita(false); 
-                        }
-                    }   
+                if(i % 2 == 0)
+                {
+                    if((j % 2 == 0) && j < 4)
+                    {
+                        p.setDireita(true);
+                    }
                     else
-                    {         
-                        portaAnterior = tabuleiro[i][j-1].getPorta();
-
-                        p.setDireita(false); // seta porta direita == false se tiver na ultima coluna
-                        p.setEsquerda(portaAnterior.isDireita()); // seta porta esquerda conforme a porta da coluna anterior
+                    {
+                        p.setDireita(false);
                     }
+                }
+                else if (i % 2 == 1)
+                {
+                    if (j % 2 == 1)
+                    {
+                        p.setDireita(true);
+                    }
+                    else
+                    {
+                        p.setDireita(false);
+                    }
+                }
+                
+                if(j == 0)
+                {
+                    p.setEsquerda(false);
+                }
+                else if(j == 4)
+                {
+                    p.setDireita(false);
+                }
+
+                if(j > 0)
+                {
+                    p.setEsquerda(tabuleiro[i][j-1].getPorta().isDireita());
                 }
 
                 tabuleiro[i][j].setPorta(p);
                 tabuleiro[i][j].setExisteInimigo(false);
                 tabuleiro[i][j].setVisitado(false);
             }
-        }
-
+        }  
         //Setor principal
-        Porta portaCentral= new Porta(true,true,true,true);
+        Porta portaCentral = new Porta(true,true,true,true);
         tabuleiro[posCentralY][posCentralX].setPorta(portaCentral);
         tabuleiro[posCentralY][posCentralX].setVisitado(true);
+        Porta p = new Porta(true,true,true,true);
+        tabuleiro[posCentralY][posCentralX-1].setPorta(p);
     }
+
 }
